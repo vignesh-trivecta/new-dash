@@ -3,7 +3,7 @@
 import React, { useRef } from "react";
 import { useState, useEffect } from 'react';
 import Image from "next/image";
-import logo from "../../../public/logo2.jpg";
+import logo from "../../../public/logo1.png";
 import CryptoJS from "crypto-js";
 import jwt  from "jsonwebtoken";
 import { Formik } from "formik";
@@ -161,17 +161,17 @@ const LoginAuth = () => {
             handleBlur,
             handleSubmit,
             }) => (
-                <div className="w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg border border-gray-300 dark:bg-gray-800">
+                <div className="p-12 w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg border border-gray-300 dark:bg-gray-800">
                     <div className="px-6 py-4">
 
                         <form noValidate onSubmit={handleSubmit}>
                             <div className="flex justify-center mx-auto">
-                                <Image className="" src={logo} alt="wealth-spring" width={100} height={100} />
+                                <Image className="" src={logo} alt="wealth-spring" width={200} height={100} />
                             </div>
 
-                            <h3 className="mt-3 text-xl font-medium text-center text-gray-600 dark:text-gray-200">Welcome Back!</h3>
+                            <h3 className="mt-3 text-xl font-medium text-center text-gray-600 dark:text-gray-200"></h3>
 
-                            <p className="mt-1 text-center text-gray-500 dark:text-gray-400">Login to your account</p>
+                            <p className="mt-1 text-center text-gray-500 dark:text-gray-400">to your account</p>
 
                             {/* Username */}
                             <div className="w-full mt-4">
@@ -254,7 +254,7 @@ const LoginAuth = () => {
                             </p>
 
                             {/* Captcha */}
-                            <div className="w-50 mt-4" style={{width: '70%'}}>
+                            <div className="mt-4" style={{width: '70%'}}>
                                 <div className="relative text-gray-700 mt-4">
                                     <input 
                                     disabled

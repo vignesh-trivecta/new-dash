@@ -1,24 +1,27 @@
 'use client';
 
-import React from "react";
+import React, { useState } from "react";
 import Logo from "@/../public/logo1.png";
 import Image from "next/image";
 import Link from "next/link";
-import { Avatar, Dropdown } from 'flowbite-react';
+import { Dropdown } from 'flowbite-react';
 
 const DashLayout = ({children}) => {
 
-  const customTheme = {
-    button: {
-      color: {
-        primary: 'bg-red-500 hover:bg-red-600',
-      },
-    },
-  };
+  const dynamicStyle = (divId) => {
+    if(id == divId){
+        return { backgroundColor: "#4338CA", borderRadius: "8px"}
+    }
+  }
+
+  const [ id, setId ] = useState(1)
+
   return (
     <div>
       <nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
         <div className="px-3 py-3 lg:px-5 lg:pl-3">
+
+          {/* Wealth spring logo */}
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-start">
               <button
@@ -44,15 +47,27 @@ const DashLayout = ({children}) => {
                 </svg>
               </button>
               <a href="#" className="flex ml-2 md:mr-24">
-                <Image src={Logo} alt='wealthspring' width={120} height={10}/>
+                <Image src={Logo} alt='wealthspring' width={150} height={10}/>
                 {/* <span >
                   <Image src={Logo} alt='wealthspring' />
                 </span> */}
               </a>
             </div>
+
+            {/* Search bar */}
+            <div class="pt-2 relative mx-auto text-gray-600">
+              <input class="border border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none"
+                type="search" name="search" placeholder="Search" />
+              <button type="submit" class="absolute right-0 top-0 mt-5 mr-4">
+                <svg class="w-4 h-4 text-gray-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                </svg>
+              </button>
+            </div>
+            
+            {/* Admin dropdown */}
             <div className="flex items-center">
               <div className="flex items-center ml-3">
-
                 <Dropdown
                   inline
                   label={<svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -84,18 +99,20 @@ const DashLayout = ({children}) => {
 
       <aside
         id="logo-sidebar"
-        className="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
+        className="fixed top-0 left-0 z-40 w-48 h-screen pt-20 transition-transform -translate-x-full border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
         aria-label="Sidebar"
+        style={{backgroundColor: '#1B1A47'}}
       >
-        <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
-          <ul className="space-y-2 font-medium">
-            <li>
+        <div className="h-full px-3 pb-4 overflow-y-auto dark:bg-gray-800" style={{backgroundColor: '#1B1A47'}}>
+          <ul className="space-y-2 mt-4 font-medium">
+            <li style={dynamicStyle(1)}>
               <Link
                 href="/admin/dashboard"
-                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className="flex items-center p-2 text-white hover:text-black rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                onClick={() => setId(1)}
               >
                 <svg
-                  className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                  className="w-5 h-5 text-white transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="currentColor"
@@ -107,13 +124,14 @@ const DashLayout = ({children}) => {
                 <span className="ml-3">Dashboard</span>
               </Link>
             </li>
-            <li>
+            <li style={dynamicStyle(2)}>
               <Link
                 href="/admin/customers"
-                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className="flex items-center p-2 text-white hover:text-black rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                onClick={() => setId(2)}
               >
                 <svg
-                  className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                  className="flex-shrink-0 w-5 h-5 text-white transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="currentColor"
@@ -124,13 +142,14 @@ const DashLayout = ({children}) => {
                 <span className="flex-1 ml-3 whitespace-nowrap">Customers</span>
               </Link>
             </li>
-            <li>
-              <a
-                href="#"
-                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+            <li style={dynamicStyle(3)}>
+              <Link
+                href="/admin/baskets"
+                className="flex items-center p-2 text-white hover:text-black rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                onClick={() => setId(3)}
               >
                 <svg
-                  className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                  className="flex-shrink-0 w-5 h-5 text-white transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="currentColor"
@@ -139,40 +158,15 @@ const DashLayout = ({children}) => {
                   <path d="M17 5.923A1 1 0 0 0 16 5h-3V4a4 4 0 1 0-8 0v1H2a1 1 0 0 0-1 .923L.086 17.846A2 2 0 0 0 2.08 20h13.84a2 2 0 0 0 1.994-2.153L17 5.923ZM7 9a1 1 0 0 1-2 0V7h2v2Zm0-5a2 2 0 1 1 4 0v1H7V4Zm6 5a1 1 0 1 1-2 0V7h2v2Z" />
                 </svg>
                 <span className="flex-1 ml-3 whitespace-nowrap">Baskets</span>
-              </a>
+              </Link>
   
-            </li>
-            </ul>
-            <ul className="pt-4 mt-80 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
-            <li>
-              <a
-                href="#"
-                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-              >
-                <svg
-                  className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 18 16"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3"
-                  />
-                </svg>
-                <span className="flex-1 ml-3 whitespace-nowrap">Sign Out</span>
-              </a>
             </li>
             </ul>
         </div>
       </aside>
 
-      <div className="p-4 sm:ml-64">
-        <div className="p-4 mt-14">
+      <div className="p-4 sm:ml-48">
+        <div className="p-4 mt-16">
           {children}
         </div>
       </div>
