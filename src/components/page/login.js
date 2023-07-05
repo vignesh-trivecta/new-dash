@@ -1,0 +1,308 @@
+'use client';
+
+import React, { useRef } from "react";
+import { useState, useEffect } from 'react';
+import Image from "next/image";
+import logo from "../../../public/logo2.jpg";
+import CryptoJS from "crypto-js";
+import jwt  from "jsonwebtoken";
+import { Formik } from "formik";
+import * as Yup from "yup";
+import { setLoggedIn } from "@/store/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
+import { setPassword, setUser } from "@/store/userSlice";
+import { Label, TextInput } from 'flowbite-react';
+
+const LoginAuth = () => {
+
+    const [breakpoint, setBreakpoint] = useState('');
+    const [captchaValue, setCaptchaValue] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    
+    const router = useRouter();
+    const dispatch = useDispatch();
+    
+    const captchaRef = useRef(null);
+  
+    function generateCaptcha() {
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let captcha = '';
+      for(let i=0; i<6; i++){
+        captcha += characters.charAt(Math.floor(Math.random() * characters.length));
+      }
+      setCaptchaValue(captcha);
+    }
+
+    useEffect(() => {
+        const handleResize = () => {
+          const windowWidth = window.innerWidth;
+    
+          if (windowWidth < 576) {
+            setBreakpoint('xs');
+          } else if (windowWidth >= 576 && windowWidth < 768) {
+            setBreakpoint('sm');
+          } else if (windowWidth >= 768 && windowWidth < 992) {
+            setBreakpoint('md');
+          } else if (windowWidth >= 992 && windowWidth < 1200) {
+            setBreakpoint('lg');
+          } else {
+            setBreakpoint('xl');
+          }
+        };
+    
+        handleResize();
+        generateCaptcha();
+    
+        window.addEventListener('resize', handleResize);
+    
+        return () => {
+          window.removeEventListener('resize', handleResize);
+        };
+      }, []
+    );
+
+      // function to encrypt the username and password using CryptoJS
+  function encryptedCredentials(user, password, SECRET_KEY) {
+    const salt= CryptoJS.enc.Utf8.parse('This is a static salt');
+    const iterations = 1000;
+    const keySize = 256 / 32 + 128 / 32;
+    const key = CryptoJS.PBKDF2(SECRET_KEY, salt, { keySize: keySize, iterations: iterations });
+    const keyString = CryptoJS.enc.Hex.stringify(key);
+    console.log(keyString)
+    const iv = CryptoJS.enc.Hex.parse("26463b878c7e8239e01aa17b21d8228e");
+    
+    const encryptedUser = CryptoJS.AES.encrypt(user, key, { iv: iv }).toString();
+    const encryptedPassword = CryptoJS.AES.encrypt(password, key, { iv: iv }).toString();    
+    
+    return {encryptedUser, encryptedPassword};
+  }
+
+  // onsubmit function 
+  const submitLogin = (values) => {
+    
+    // destructuring values object
+    const { username, password, captcha } = values;
+    dispatch(setLoggedIn(true));
+    dispatch(setUser(username));
+    router.push('/admin/dashboard');
+
+    // checking if login credentials are correct
+    if(username === 'admin12' && password === 'admin12' && captcha === captchaValue){
+
+      // signing the username, password with secret key
+      // using jwt to create a authentication token
+      
+      const { encryptedUser, encryptedPassword } = encryptedCredentials(username, password, process.env.NEXT_PUBLIC_SECRET_KEY);
+      const token = jwt.sign({encryptedUser, encryptedPassword}, process.env.NEXT_PUBLIC_SECRET_KEY);
+
+      console.log(token);
+      // posting the authorized token to backend,
+      // based on the received respone 200 or 404 
+      // redirecting user to next page
+      fetch("http://localhost:8082/adminlogin", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+          // body: token,
+      })
+      .then(response => {
+          if (response.status === 200) {
+            // authentication successful
+            // redirect user to dashboard or home page
+    
+            dispatch(setLoggedIn(true));
+            router.push('/admin/dashboard');
+          } 
+          else {
+            // authentication failed
+            // display error message to user
+    
+            alert("Invalid credentials");
+          }
+      })
+      .catch(error => {
+          console.error('There was a problem with the fetch operation:', error);
+      });
+    }
+  };
+
+  // Yup validation schema structure
+  const validationSchema = Yup.object().shape({
+    username: Yup.string()
+      .required("Username is required")
+      .min(3, "Username must be at least 3 characters")
+      .max(10, "Username must be at most 10 characters")
+      .matches(/^[a-zA-Z0-9_]+$/, "Username can only contain letters, numbers, and underscores"),
+    password: Yup.string()
+      .required("Password is required")
+      .min(5, "Password must be at least 5 characters"),
+    captcha: Yup.string()
+      .required("Captcha is required")
+  });
+
+    
+    return(
+        <div className="container">
+
+            {/* Sign in page */}
+            <Formik
+            validationSchema={validationSchema}
+            initialValues={{ username: "", password: "", captcha: "" }}
+            onSubmit={(values) => submitLogin(values)}
+            >
+            {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            }) => (
+                <div className="w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg border border-gray-300 dark:bg-gray-800">
+                    <div className="px-6 py-4">
+
+                        <form noValidate onSubmit={handleSubmit}>
+                            <div className="flex justify-center mx-auto">
+                                <Image className="" src={logo} alt="wealth-spring" width={100} height={100} />
+                            </div>
+
+                            <h3 className="mt-3 text-xl font-medium text-center text-gray-600 dark:text-gray-200">Welcome Back!</h3>
+
+                            <p className="mt-1 text-center text-gray-500 dark:text-gray-400">Login to your account</p>
+
+                            {/* Username */}
+                            <div className="w-full mt-4">
+                                <input 
+                                className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-500 bg-white border-gray-300 rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300" 
+                                type="text" 
+                                name="username"
+                                id="username"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.username}
+                                placeholder="Username" 
+                                aria-label="username" />
+                            </div>
+                            {/* If validation is not passed show errors */}
+                            <p className="error text-red-500" style={{fontSize: '12px'}}>
+                                {errors.username && touched.username && errors.username}
+                            </p>
+
+                            {/* Password */}
+                            {showPassword 
+                            ? (
+
+                                <div className="relative text-gray-700 mt-4">
+                                    <input 
+                                    className="w-full h-10 pl-3 pr-8 text-gray-700 placeholder-gray-500 bg-white border border-gray-300 rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300" 
+                                    type="text" 
+                                    name="password"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.password} 
+                                    placeholder="Password" 
+                                    aria-label="password"
+                                    />
+                                    <button 
+                                    className="absolute inset-y-0 right-0 flex items-center px-4 font-bold text-white bg-gray-300 rounded-r-lg hover:bg-gray-400 focus:bg-gray-500"
+                                    type="button" 
+                                    id="password-visible" 
+                                    onClick={() => setShowPassword(false)}
+                                    >
+                                         <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 14">
+                                             <g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1">
+                                             <path d="M10 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                                             <path d="M10 13c4.97 0 9-2.686 9-6s-4.03-6-9-6-9 2.686-9 6 4.03 6 9 6Z"/>
+                                             </g>
+                                         </svg>
+                                    </button>
+                                </div>
+                            ) 
+                            : (
+
+                                <div className="relative text-gray-700 mt-4">
+                                    <input 
+                                    className="w-full h-10 pl-3 pr-8 text-gray-700 placeholder-gray-500 bg-white border border-gray-300 rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300" 
+                                    type="password" 
+                                    name="password"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.password} 
+                                    placeholder="Password" 
+                                    aria-label="password"
+                                    />
+                                    <button 
+                                    className="absolute inset-y-0 right-0 flex items-center px-4 font-bold text-white bg-gray-300 rounded-r-lg hover:bg-gray-400 focus:bg-gray-500"
+                                    type="button" 
+                                    id="password-visible" 
+                                    onClick={() => setShowPassword(true)}
+                                    >
+                                        <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M1.933 10.909A4.357 4.357 0 0 1 1 9c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 19 9c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M2 17 18 1m-5 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                              )
+                            }
+
+                            {/* If validation is not passed show errors */}
+                            <p className="error text-red-500" style={{fontSize: '12px'}}>
+                                {errors.password && touched.password && errors.password}
+                            </p>
+
+                            {/* Captcha */}
+                            <div className="w-50 mt-4" style={{width: '70%'}}>
+                                <div className="relative text-gray-700 mt-4">
+                                    <input 
+                                    disabled
+                                    className="block w-full text-gray-700 bg-gray-100 border-gray-300 rounded-lg dark:bg-gray-800 dark:border-gray-600" 
+                                    type="text" 
+                                    value={captchaValue}
+                                    aria-label="Captcha" 
+                                    />
+                                    <button 
+                                    className="absolute inset-y-0 right-0 flex items-center px-4 font-bold text-white bg-gray-300 rounded-r-lg hover:bg-gray-400 focus:bg-gray-300"
+                                    type="button" 
+                                    id="password-visible" 
+                                    onClick={generateCaptcha}
+                                    >
+                                        <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="m1 14 3-3m-3 3 3 3m-3-3h16v-3m2-7-3 3m3-3-3-3m3 3H3v3"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <p className="text-gray-500 dark:text-gray-400 mt-2">Enter the above text</p>
+                                <input 
+                                className="block w-full text-gray-700 placeholder-gray-500 bg-white border-gray-300 rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300" 
+                                type="text"
+                                placeholder="Enter Captcha" 
+                                name="captcha"
+                                value={values.captcha}
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                ref={captchaRef} 
+                                />
+                            </div>
+                            <p className="error text-red-500" style={{fontSize: '12px'}}>
+                                {errors.captcha && touched.captcha && errors.captcha}
+                            </p>
+
+
+                            <div className="flex justify-center mt-4">
+                                <button className="px-6 py-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50">
+                                    Log In
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                )}
+            </Formik>
+        </div>
+    )
+}
+
+export default LoginAuth;

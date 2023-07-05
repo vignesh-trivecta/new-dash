@@ -1,10 +1,10 @@
 'use client';
 
 import React from "react";
-import Logo from "../../public/logo1.png";
+import Logo from "@/../public/logo1.png";
 import Image from "next/image";
 import Link from "next/link";
-import { Avatar, Flowbite, Dropdown } from 'flowbite-react';
+import { Avatar, Dropdown } from 'flowbite-react';
 
 const DashLayout = ({children}) => {
 
@@ -55,7 +55,10 @@ const DashLayout = ({children}) => {
 
                 <Dropdown
                   inline
-                  label={<Avatar alt="Admin" className="text-sm" img="/images/people/profile-picture-5.jpg" rounded/>}
+                  label={<svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z"/>
+                  </svg>}
+                  className="p-2"
                 >
                   <Dropdown.Header>
                     <span className="block text-sm">
@@ -140,7 +143,7 @@ const DashLayout = ({children}) => {
   
             </li>
             </ul>
-            <ul className="pt-4 mt-72 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
+            <ul className="pt-4 mt-80 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
             <li>
               <a
                 href="#"
@@ -169,10 +172,8 @@ const DashLayout = ({children}) => {
       </aside>
 
       <div className="p-4 sm:ml-64">
-        <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
-          <div className="grid grid-cols-3 gap-4 mb-4">
+        <div className="p-4 mt-14">
           {children}
-        </div>
         </div>
       </div>
     </div>

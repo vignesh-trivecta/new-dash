@@ -1,5 +1,5 @@
 'use client'
-import DashLayout from '@/components/DashLayout'
+import DashLayout from '@/components/page/DashLayout'
 import React from 'react'
 
 const DashboardLayout = ({ children }) => {
