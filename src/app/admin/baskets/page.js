@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useRouter } from "next/navigation";
 import { setBasketName, setBasketAmount } from '@/store/basketSlice';
 import { useDispatch } from 'react-redux';
+import BasketDetails from '@/components/admin/basketDetails';
 
 const Customers = () => {
 
@@ -20,7 +21,18 @@ const Customers = () => {
 
   return (
     <div>
-      <Button onClick={() => props.setOpenModal('form-elements')} className="bg-blue-500">Create new Basket</Button>
+      <div>
+        <div className='flex'>
+          <h5 className='mt-4 mr-4 font-bold'>Baskets</h5>
+          <Button onClick={() => props.setOpenModal('form-elements')} className="bg-blue-500">
+          <svg class="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+          </svg>
+            &nbsp;Create new Basket
+            </Button>
+        </div>
+          <BasketDetails />
+      </div>      
       <Modal show={props.openModal === 'form-elements'} size="md" popup onClose={() => props.setOpenModal(undefined)}>
         <Modal.Body className="p-4">
           <div className="space-y-6">

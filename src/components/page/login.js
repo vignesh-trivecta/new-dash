@@ -62,7 +62,7 @@ const LoginAuth = () => {
       }, []
     );
 
-      // function to encrypt the username and password using CryptoJS
+  // function to encrypt the username and password using CryptoJS
   function encryptedCredentials(user, password, SECRET_KEY) {
     const salt= CryptoJS.enc.Utf8.parse('This is a static salt');
     const iterations = 1000;
