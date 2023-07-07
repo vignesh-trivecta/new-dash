@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 // initial state values
 const initialState = {
   basketName: '',
-  basketAmount: 0,
+  basketAmount: null,
 };
 
 // creating a new slice

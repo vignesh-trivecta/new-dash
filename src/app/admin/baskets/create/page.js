@@ -5,7 +5,9 @@ import { useSelector } from 'react-redux/es/hooks/useSelector';
 // import basket from '@/data/basketData';
 import { getInstrumentDetails } from '@/app/api/basket/route';
 import { Button, Checkbox, Label, Modal, TextInput } from 'flowbite-react';
+import { setBasketAmount, setBasketName } from '@/store/basketSlice';
 // import Select from "react-tailwindcss-select";
+import { useDispatch } from 'react-redux';
 
 const options = [
   { value: "fox", label: "🦊 Fox" },
@@ -18,6 +20,7 @@ const CreateBasket = () => {
 
   const basketName = useSelector((state) => state.basket.basketName);
   const basketAmount = useSelector((state) => state.basket.basketAmount);
+  const dispatch = useDispatch();
 
   //modal values
   const [openModal, setOpenModal] = useState('');
@@ -75,18 +78,18 @@ const CreateBasket = () => {
     <div>
         <p className='mb-2 font-bold underline-offset-1'>Create new Basket</p>
         {/* Investment details row */}
-      <div className="flex justify-between mb-2">
+      <div className="grid grid-cols-3 gap-4 mb-2">
         <div className="flex items-center">
           <p className="text-black dark:text-white mr-2">Investment Amount</p>
-          <input disabled type="number" value={basketAmount} className="border border-gray-300 rounded-lg w-36" />
+          <input disabled type="number" value={basketAmount} className="border border-gray-300 rounded-lg w-44" />
         </div>
         <div className="flex items-center">
           <p className="text-black dark:text-white mr-2">Basket Value</p>
-          <input disabled type="number" className="border border-gray-300 rounded-lg w-36" />
+          <input disabled type="number" className="border border-gray-300 rounded-lg w-44" />
         </div>
         <div className="flex items-center">
           <p className="text-black dark:text-white mr-2">Basket Name</p>
-          <input disabled type="text" value={basketName} className="border border-gray-300 rounded-lg w-36" />
+          <input disabled type="text" value={basketName} className="border border-gray-300 rounded-lg w-44" />
         </div>
       </div>
 
@@ -246,7 +249,10 @@ const CreateBasket = () => {
         </table>
       </div>
         <div className='text-end mt-4'>
-          <button className='border border-gray-300 rounded-md p-2 bg-green-400 text-white'>Submit</button>
+          <button className='border border-gray-300 rounded-md p-2 bg-green-400 text-white' onClick={() => {
+            dispatch(setBasketAmount(null));
+            dispatch(setBasketName(''));
+          }}>Submit</button>
         </div>
     </div>
   )

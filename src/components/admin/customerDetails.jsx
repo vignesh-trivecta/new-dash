@@ -11,7 +11,7 @@ const CustomerDetails = () => {
     return(
         loggedIn ? (<div className="container">
 
-            <h5>Customer Details</h5>
+            <h5 className="font-bold">Customer Details</h5>
 
             {/* Customer Details table */}
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -22,10 +22,7 @@ const CustomerDetails = () => {
                                 S.No
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                Firstname
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Lastname
+                                Name
                             </th>
                             <th scope="col" className="px-6 py-3">
                                 Email
@@ -41,10 +38,7 @@ const CustomerDetails = () => {
                                 1
                             </th>
                             <td className="px-6 py-4">
-                                Vinod
-                            </td>
-                            <td className="px-6 py-4">
-                                Kumar
+                                Vinod Kumar
                             </td>
                             <td className="px-6 py-4">
                                 vinod12@gmail.com
@@ -58,10 +52,7 @@ const CustomerDetails = () => {
                                 2
                             </th>
                             <td className="px-6 py-4">
-                                Meera
-                            </td>
-                            <td className="px-6 py-4">
-                            Velu
+                                Meera Velu
                             </td>
                             <td className="px-6 py-4">
                                 meera12@gmail.com
@@ -75,10 +66,7 @@ const CustomerDetails = () => {
                                 3
                             </th>
                             <td className="px-6 py-4">
-                                Veera
-                            </td>
-                            <td className="px-6 py-4">
-                                Vel
+                                Veera Vel
                             </td>
                             <td className="px-6 py-4">
                                 veeragg12@gmail.com
@@ -92,10 +80,7 @@ const CustomerDetails = () => {
                                 4
                             </th>
                             <td className="px-6 py-4">
-                                Shriram
-                            </td>
-                            <td className="px-6 py-4">
-                                Kumar
+                                Shriram Kumar
                             </td>
                             <td className="px-6 py-4">
                                 shrirams@gmail.com
@@ -109,10 +94,7 @@ const CustomerDetails = () => {
                                 5
                             </th>
                             <td className="px-6 py-4">
-                                Baskar
-                            </td>
-                            <td className="px-6 py-4">
-                                Shiva
+                                Baskar Shiva
                             </td>
                             <td className="px-6 py-4">
                                 baskivek@gmail.com
@@ -126,10 +108,7 @@ const CustomerDetails = () => {
                                 6
                             </th>
                             <td className="px-6 py-4">
-                                Kumar
-                            </td>
-                            <td className="px-6 py-4">
-                                Vel
+                                Kumar Vel
                             </td>
                             <td className="px-6 py-4">
                                 kumarvv@gmail.com
