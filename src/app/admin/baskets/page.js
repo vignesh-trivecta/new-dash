@@ -33,7 +33,7 @@ const Customers = () => {
         </div>
           <BasketDetails />
       </div>      
-      <Modal show={props.openModal === 'form-elements'} size="md" popup onClose={() => props.setOpenModal(undefined)}>
+      <Modal show={props.openModal === 'form-elements'} size="md" popup onClose={() => props.setOpenModal(undefined)} className='pt-24'>
         <Modal.Body className="p-4">
           <div className="space-y-6">
             <h3 className="text-xl font-medium text-gray-900 dark:text-white">New Basket</h3>
