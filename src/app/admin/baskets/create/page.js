@@ -3,8 +3,13 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux/es/hooks/useSelector';
 // import basket from '@/data/basketData';
+<<<<<<< HEAD
 import { getInstrumentDetails, getEquityPrice, sendWeightage } from '@/app/api/basket/route';
 import { Button, Checkbox, Label, Modal, TextInput } from 'flowbite-react';
+=======
+import { getInstrumentDetails } from '@/app/api/basket/route';
+import { Button, Label, Modal, TextInput } from 'flowbite-react';
+>>>>>>> efccaf4129171b29b54354402dbfbdd94709f461
 import { setBasketAmount, setBasketName } from '@/store/basketSlice';
 // import Select from "react-tailwindcss-select";
 import { useDispatch } from 'react-redux';
@@ -114,7 +119,7 @@ const CreateBasket = () => {
         </svg>
         &nbsp; Add new row
       </Button>
-      <Modal show={props.openModal === 'form-elements'} size="lg" popup onClose={() => props.setOpenModal(undefined)}>
+      <Modal show={props.openModal === 'form-elements'} popup onClose={() => props.setOpenModal(undefined)} className='pt-24'>
         <Modal.Body className="p-4 flex justify-center">
           <div className="space-y-6">
             <h3 className="text-xl font-medium text-gray-900 dark:text-white">Add row</h3>
