@@ -169,7 +169,7 @@ const LoginAuth = () => {
                                 <Image className="" src={logo} alt="wealth-spring" width={200} height={100} />
                             </div>
 
-                            <h3 className="mt-3 text-xl font-medium text-center text-gray-600 dark:text-gray-200"></h3>
+                            <h3 className="mt-3 text-xl font-medium text-center text-gray-600 dark:text-gray-200">Log in</h3>
 
                             <p className="mt-1 text-center text-gray-500 dark:text-gray-400">to your account</p>
 
@@ -212,7 +212,7 @@ const LoginAuth = () => {
                                     id="password-visible" 
                                     onClick={() => setShowPassword(false)}
                                     >
-                                         <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 14">
+                                         <svg className="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 14">
                                              <g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1">
                                              <path d="M10 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
                                              <path d="M10 13c4.97 0 9-2.686 9-6s-4.03-6-9-6-9 2.686-9 6 4.03 6 9 6Z"/>
@@ -240,7 +240,7 @@ const LoginAuth = () => {
                                     id="password-visible" 
                                     onClick={() => setShowPassword(true)}
                                     >
-                                        <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
+                                        <svg className="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M1.933 10.909A4.357 4.357 0 0 1 1 9c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 19 9c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M2 17 18 1m-5 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
                                         </svg>
                                     </button>
@@ -254,7 +254,7 @@ const LoginAuth = () => {
                             </p>
 
                             {/* Captcha */}
-                            <div className="mt-4" style={{width: '70%'}}>
+                            <div className="mt-4">
                                 <div className="relative text-gray-700 mt-4">
                                     <input 
                                     disabled
@@ -269,16 +269,15 @@ const LoginAuth = () => {
                                     id="password-visible" 
                                     onClick={generateCaptcha}
                                     >
-                                        <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
+                                        <svg className="w-3 h-3 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="m1 14 3-3m-3 3 3 3m-3-3h16v-3m2-7-3 3m3-3-3-3m3 3H3v3"/>
                                         </svg>
                                     </button>
                                 </div>
-                                <p className="text-gray-500 dark:text-gray-400 mt-2">Enter the above text</p>
                                 <input 
-                                className="block w-full text-gray-700 placeholder-gray-500 bg-white border-gray-300 rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300" 
+                                className=" mt-4 block w-full text-gray-700 placeholder-gray-500 bg-white border-gray-300 rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300" 
                                 type="text"
-                                placeholder="Enter Captcha" 
+                                placeholder="Enter the above text" 
                                 name="captcha"
                                 value={values.captcha}
                                 onBlur={handleBlur}

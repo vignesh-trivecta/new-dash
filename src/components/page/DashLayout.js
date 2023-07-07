@@ -5,6 +5,10 @@ import Logo from "@/../public/logo1.png";
 import Image from "next/image";
 import Link from "next/link";
 import { Dropdown } from 'flowbite-react';
+import { setLoggedIn } from "@/store/authSlice";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
+
 
 const DashLayout = ({children}) => {
 
@@ -14,7 +18,9 @@ const DashLayout = ({children}) => {
     }
   }
 
-  const [ id, setId ] = useState(1)
+  const [ id, setId ] = useState(1);
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   return (
     <div>
@@ -88,7 +94,12 @@ const DashLayout = ({children}) => {
                   </Dropdown.Item>
                   <Dropdown.Divider />
                   <Dropdown.Item>
-                    Sign out
+                    <button onClick={() => {
+                      router.push('/')
+                      dispatch(setLoggedIn(false));
+                    }}>
+                      Sign out
+                    </button>
                   </Dropdown.Item>
                 </Dropdown> 
               </div>

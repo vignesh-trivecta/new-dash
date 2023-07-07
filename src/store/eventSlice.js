@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 // initial state values
 const initialState = {
-    tab: 'basket',
+    tab: 1,
 }
 
 // creating new slice

@@ -114,7 +114,7 @@ const CreateBasket = () => {
                     <option value="" disabled>Select</option>
                     {
                       equityData.map((data, index) => {
-                        return <option value={data.isinNo}>{data.instrumentName}</option>
+                        return <option value={data.instrumentName}>{data.instrumentName}</option>
                       })
                     }
                   </select> 
