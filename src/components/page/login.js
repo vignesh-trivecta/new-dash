@@ -62,20 +62,25 @@ const LoginAuth = () => {
       }, []
     );
 
-  // function to encrypt the username and password using CryptoJS
-  function encryptedCredentials(user, password, SECRET_KEY) {
-    const salt= CryptoJS.enc.Utf8.parse('This is a static salt');
-    const iterations = 1000;
-    const keySize = 256 / 32 + 128 / 32;
-    const key = CryptoJS.PBKDF2(SECRET_KEY, salt, { keySize: keySize, iterations: iterations });
-    const keyString = CryptoJS.enc.Hex.stringify(key);
-    console.log(keyString)
-    const iv = CryptoJS.enc.Hex.parse("26463b878c7e8239e01aa17b21d8228e");
-    
-    const encryptedUser = CryptoJS.AES.encrypt(user, key, { iv: iv }).toString();
-    const encryptedPassword = CryptoJS.AES.encrypt(password, key, { iv: iv }).toString();    
-    
-    return {encryptedUser, encryptedPassword};
+
+// function to encrypt the username and password using CryptoJS
+// function encryptedCredentials(user, password, SECRET_KEY) {
+//   var key = CryptoJS.enc.Utf8.parse(SECRET_KEY);
+//   var iv = CryptoJS.enc.Utf8.parse('encryptionIntwer');
+//   console.log("key:" ,key.toString(), "\n iv:",iv.toString(), iv);
+//   let encryptedUser = CryptoJS.AES.encrypt(user, key, { iv: iv }).toString();
+//   let encryptedPassword = CryptoJS.AES.encrypt(password, key, { iv: iv }).toString();
+//   return {encryptedUser, encryptedPassword};
+// }
+
+function encryptedCredentials(user, password, SECRET_KEY) {
+  const key = CryptoJS.enc.Utf8.parse(SECRET_KEY);
+  const iv = CryptoJS.enc.Utf8.parse('encryptionInter');
+  const encryptedUser = CryptoJS.AES.encrypt(user, key, { iv: iv, mode: CryptoJS.mode.CBC });
+  const encryptedPassword = CryptoJS.AES.encrypt(password, key, { iv: iv, mode: CryptoJS.mode.CBC });
+  const encodedUser = CryptoJS.enc.Base64.stringify(encryptedUser);
+  const encodedPassword = CryptoJS.enc.Base64.stringify(encryptedPassword);
+  return { encodedUser, encodedPassword };
   }
 
   // onsubmit function 
@@ -93,14 +98,15 @@ const LoginAuth = () => {
       // signing the username, password with secret key
       // using jwt to create a authentication token
       
-      const { encryptedUser, encryptedPassword } = encryptedCredentials(username, password, process.env.NEXT_PUBLIC_SECRET_KEY);
-      const token = jwt.sign({encryptedUser, encryptedPassword}, process.env.NEXT_PUBLIC_SECRET_KEY);
+      const { encodedUser, encodedPassword } = encryptedCredentials(username, password, 'admin12');
+      const token = jwt.sign({encodedUser, encodedPassword}, 'admin12');
+
 
       console.log(token);
       // posting the authorized token to backend,
       // based on the received respone 200 or 404 
       // redirecting user to next page
-      fetch("http://localhost:8082/adminlogin", {
+      fetch("http://localhost:8082/admin/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

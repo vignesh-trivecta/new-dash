@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux/es/hooks/useSelector';
 // import basket from '@/data/basketData';
-import { getInstrumentDetails } from '@/app/api/basket/route';
-import { Button, Label, Modal, TextInput } from 'flowbite-react';
+import { getInstrumentDetails, getEquityPrice, sendWeightage } from '@/app/api/basket/route';
+import { Button, Checkbox, Label, Modal, TextInput } from 'flowbite-react';
 import { setBasketAmount, setBasketName } from '@/store/basketSlice';
 // import Select from "react-tailwindcss-select";
 import { useDispatch } from 'react-redux';
@@ -31,7 +31,9 @@ const CreateBasket = () => {
   let [selectedEquity, setSelectedEquity] = useState('');
   let [selectedExchange, setSelectedExchange] = useState('');
   let [selectedOrderType, setSelectedOrderType] = useState('');
-  let [weightage, setWeightage] = useState(null);
+  let [weightage, setWeightage] = useState(undefined);
+  let [equityPrice, setEquityPrice] = useState(undefined);
+  let [quantity, setQuantity] =useState(undefined);
   
 
   // const handleChange = value => {
@@ -65,6 +67,18 @@ const CreateBasket = () => {
       return updatedBasket;
     });
   };
+
+  // function to get equity price
+  const equityPriceAPI = async () => {
+    const price = await getEquityPrice(selectedEquity, selectedExchange);
+    setEquityPrice(price);
+  }
+
+  // function to get the quantity of stocks based on weightage
+  const quantityAPI = async () => {
+    const quantity = await sendWeightage(weightage, basketAmount, equityPrice);
+    setQuantity(quantity);
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -135,7 +149,10 @@ const CreateBasket = () => {
                   <Label htmlFor="exchange" value="Select Exchange" />
                 </div>
                 <div>
-                  <select name="exchange" id="exchange" value={selectedExchange} onChange={(e) => setSelectedExchange(e.target.value)} className='w-44 border border-gray-300 text-gray-500 rounded-md'>
+                  <select name="exchange" id="exchange" value={selectedExchange} onChange={(e) => {
+                    setSelectedExchange(e.target.value);
+                    equityPriceAPI();
+                  }} className='w-44 border border-gray-300 text-gray-500 rounded-md'>
                     <option value="" selected disabled>Select</option>
                     <option value="BSE">BSE</option>
                     <option value="NSE">NSE</option>
@@ -148,7 +165,7 @@ const CreateBasket = () => {
                   <Label htmlFor="price" value="Price" />
                 </div>
                 <div>
-                  <input disabled type='number' className='border border-gray-300 rounded-md w-32 bg-gray-300' placeholder={`price`} />
+                  <input disabled type='number' className='border border-gray-300 rounded-md w-32 bg-gray-300' placeholder={equityPrice} />
                 </div>
               </div>
             </div>
@@ -171,10 +188,13 @@ const CreateBasket = () => {
               {/* Weightage */}
               <div className='ml-6'>
                 <div className="">
-                  <Label htmlFor="weightage" value="Ener weightage %" />
+                  <Label htmlFor="weightage" value="Enter weightage %" />
                 </div>
                 <div>
-                  <input type='number' onChange={(e) => setWeightage(e.target.value)} className='w-44 border border-gray-300 rounded-md' />
+                  <input type='number' onChange={(e) => {
+                    setWeightage(e.target.value);
+                    quantityAPI();
+                  }} className='w-44 border border-gray-300 rounded-md' />
                 </div>
               </div>
             </div>
@@ -185,16 +205,16 @@ const CreateBasket = () => {
                   <Label htmlFor="quantity" value="Quantity" />
                 </div>
                 <div>
-                  <input type='number' disabled name='quantity' className='w-56 bg-gray-300 border border-gray-300 rounded-md' />
+                  <input type='number' disabled value={quantity} name='quantity' className='w-56 bg-gray-300 border border-gray-300 rounded-md' />
                 </div>
               </div>
               <div className="ml-6">
-                <div>
+                {/* <div>
                   <Label htmlFor="totalAmount" value="Total Price" />
-                </div>
-                <div>
+                </div> */}
+                {/* <div>
                   <input type='number' disabled name='totalAmount' className='w-44 bg-gray-300 border border-gray-300 rounded-md' />
-                </div>
+                </div> */}
               </div>
             </div>
             
