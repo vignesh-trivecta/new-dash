@@ -15,7 +15,7 @@ const DashCards = () => {
                     <div className="flex items-center">
                         <div className="flex-shrink-0">
                             <span className="text-xl leading-none font-bold text-gray-900">2,340</span>
-                            <h3 className="text-base font-normal text-gray-500">Total number of transactions</h3>
+                            <h3 className="text-base font-normal text-gray-500">Total no. of transactions</h3>
                         </div>
                     </div>
                 </div>
@@ -23,7 +23,7 @@ const DashCards = () => {
                     <div className="flex items-center">
                         <div className="flex-shrink-0">
                             <span className="text-xl leading-none font-bold text-gray-900">55</span>
-                            <h3 className="text-base font-normal text-gray-500">Total number of baskets executed</h3>
+                            <h3 className="text-base font-normal text-gray-500 break-words">Total no. of baskets executed</h3>
                         </div>
                     </div>
                 </div>
