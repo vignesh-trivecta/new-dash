@@ -48,7 +48,9 @@ const CreateBasket = () => {
       constituent: selectedEquity,
       exchange: selectedExchange,
       orderType: selectedOrderType,
-      weightage: weightage
+      weightage: weightage,
+      price: equityPrice,
+      quantity: quantity
     };
   
     setBasket(prevBasket => [...prevBasket, newRecord]);
@@ -56,6 +58,8 @@ const CreateBasket = () => {
     setSelectedExchange('');
     setSelectedOrderType('');
     setWeightage(null);
+    setEquityPrice(null);
+    setQuantity(null);
     props.setOpenModal(undefined);
   };
 
@@ -92,13 +96,13 @@ const CreateBasket = () => {
     <div>
         <p className='mb-2 font-bold underline-offset-1'>Create new Basket</p>
         {/* Investment details row */}
-      <div className="grid grid-cols-3 gap-4 mb-2">
+      <div className="grid grid-cols-3 gap-2 mb-2">
         <div className="flex items-center">
           <p className="text-black dark:text-white mr-2">Investment Amount</p>
           <input disabled type="number" value={basketAmount} className="border border-gray-300 rounded-lg w-44" />
         </div>
         <div className="flex items-center">
-          <p className="text-black dark:text-white mr-2">Basket Value</p>
+          <p className="text-black dark:text-white mr-2 ml-2">Basket Value</p>
           <input disabled type="number" className="border border-gray-300 rounded-lg w-44" />
         </div>
         <div className="flex items-center">
@@ -114,7 +118,7 @@ const CreateBasket = () => {
         </svg>
         &nbsp; Add new row
       </Button>
-      <Modal show={props.openModal === 'form-elements'} popup onClose={() => props.setOpenModal(undefined)} className='pt-24'>
+      <Modal show={props.openModal === 'form-elements'} popup onClose={() => props.setOpenModal(undefined)} className='px-64 py-24'>
         <Modal.Body className="p-4 flex justify-center">
           <div className="space-y-6">
             <h3 className="text-xl font-medium text-gray-900 dark:text-white">Add row</h3>
@@ -255,6 +259,8 @@ const CreateBasket = () => {
                   <td className="px-6 py-4 font-medium text-gray-900">{data.exchange}</td>
                   <td className="px-6 py-4 font-medium text-gray-900">{data.orderType}</td>
                   <td className="px-6 py-4 font-medium text-gray-900">{data.weightage}</td>
+                  <td className="px-6 py-4 font-medium text-gray-900">{data.price}</td>
+                  <td className="px-6 py-4 font-medium text-gray-900">{data.quantity}</td>
                   <td>
                     <button onClick={() => deleteRecord(index)}>
                       <svg class="w-6 h-6 text-gray-800 dark:text-white hover:text-red-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">

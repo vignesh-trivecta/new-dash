@@ -64,24 +64,14 @@ const LoginAuth = () => {
 
 
 // function to encrypt the username and password using CryptoJS
-// function encryptedCredentials(user, password, SECRET_KEY) {
-//   var key = CryptoJS.enc.Utf8.parse(SECRET_KEY);
-//   var iv = CryptoJS.enc.Utf8.parse('encryptionIntwer');
-//   console.log("key:" ,key.toString(), "\n iv:",iv.toString(), iv);
-//   let encryptedUser = CryptoJS.AES.encrypt(user, key, { iv: iv }).toString();
-//   let encryptedPassword = CryptoJS.AES.encrypt(password, key, { iv: iv }).toString();
-//   return {encryptedUser, encryptedPassword};
-// }
-
 function encryptedCredentials(user, password, SECRET_KEY) {
-  const key = CryptoJS.enc.Utf8.parse(SECRET_KEY);
-  const iv = CryptoJS.enc.Utf8.parse('encryptionInter');
-  const encryptedUser = CryptoJS.AES.encrypt(user, key, { iv: iv, mode: CryptoJS.mode.CBC });
-  const encryptedPassword = CryptoJS.AES.encrypt(password, key, { iv: iv, mode: CryptoJS.mode.CBC });
-  const encodedUser = CryptoJS.enc.Base64.stringify(encryptedUser);
-  const encodedPassword = CryptoJS.enc.Base64.stringify(encryptedPassword);
-  return { encodedUser, encodedPassword };
-  }
+  var key = CryptoJS.enc.Utf8.parse(SECRET_KEY);
+  var iv = CryptoJS.enc.Utf8.parse('testVarTreeFlowe');
+  console.log("key:" ,key.toString(), "\n iv:",iv.toString());
+  let encryptedUser = CryptoJS.AES.encrypt(user, key, { iv: iv }).toString();
+  let encryptedPassword = CryptoJS.AES.encrypt(password, key, { iv: iv }).toString();
+  return {encryptedUser, encryptedPassword};
+}
 
   // onsubmit function 
   const submitLogin = (values) => {
@@ -98,8 +88,8 @@ function encryptedCredentials(user, password, SECRET_KEY) {
       // signing the username, password with secret key
       // using jwt to create a authentication token
       
-      const { encodedUser, encodedPassword } = encryptedCredentials(username, password, 'admin12');
-      const token = jwt.sign({encodedUser, encodedPassword}, 'admin12');
+      const { encryptedUser, encryptedPassword } = encryptedCredentials(username, password, 'WepyWestTestEastWepyWestTestEast');
+      const token = jwt.sign({encryptedUser, encryptedPassword}, 'admin12');
 
 
       console.log(token);
