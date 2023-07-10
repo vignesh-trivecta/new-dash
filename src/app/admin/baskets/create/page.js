@@ -3,13 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux/es/hooks/useSelector';
 // import basket from '@/data/basketData';
-<<<<<<< HEAD
 import { getInstrumentDetails, getEquityPrice, sendWeightage } from '@/app/api/basket/route';
 import { Button, Checkbox, Label, Modal, TextInput } from 'flowbite-react';
-=======
-import { getInstrumentDetails } from '@/app/api/basket/route';
-import { Button, Label, Modal, TextInput } from 'flowbite-react';
->>>>>>> efccaf4129171b29b54354402dbfbdd94709f461
 import { setBasketAmount, setBasketName } from '@/store/basketSlice';
 // import Select from "react-tailwindcss-select";
 import { useDispatch } from 'react-redux';
@@ -214,12 +209,12 @@ const CreateBasket = () => {
                 </div>
               </div>
               <div className="ml-6">
-                <div>
+                {/* <div>
                   <Label htmlFor="totalAmount" value="Total Price" />
-                </div>
-                <div>
+                </div> */}
+                {/* <div>
                   <input type='number' disabled name='totalAmount' className='w-44 bg-gray-300 border border-gray-300 rounded-md' />
-                </div>
+                </div> */}
               </div>
             </div>
             
