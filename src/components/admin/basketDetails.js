@@ -12,7 +12,7 @@ const BasketDetails = () => {
         loggedIn ? (<div className="container">
 
             {/* Customer Details table */}
-            <div className="mt-4 relative overflow-x-auto shadow-md sm:rounded-lg">
+            <div className="mt-4 ml-8 overflow-x-auto shadow-md sm:rounded-lg">
                 <table className="w-full text-sm text-left text-gray-900 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
@@ -23,10 +23,10 @@ const BasketDetails = () => {
                                 Basket Name
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                Constituents
+                                Stock
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                Total Value
+                                Total &#8377;
                             </th>
                         </tr>
                     </thead>

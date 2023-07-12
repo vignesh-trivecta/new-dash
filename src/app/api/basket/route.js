@@ -1,4 +1,3 @@
-
 // API call for getting the price of Equity
 export const getEquityPrice = async (constituent, exchange) => {
     try {
@@ -18,14 +17,11 @@ export const getEquityPrice = async (constituent, exchange) => {
         
         if (response.ok) {
             const responseText = await response.text();
-            if (responseText) {
             data = JSON.parse(responseText);
-            }
-        }
-        if (data) {
             return data.price;
         } else {
-            throw new Error("Failed to fetch equity price data");
+            const errorText = await response.text();
+            throw new Error(`Failed to fetch data: ${errorText}`);
         }
     }
     catch(error){
@@ -34,7 +30,7 @@ export const getEquityPrice = async (constituent, exchange) => {
 
 }
 
-// API call to get the constituents and exchange details
+// API call to get the stocks and exchange details
 export const getInstrumentDetails = async () => {
     try{
         const response = await fetch("http://localhost:8083/trading/instruments")
@@ -43,8 +39,9 @@ export const getInstrumentDetails = async () => {
             const jsonData = await response.json();
             return jsonData;
         }
-        else{
-            throw new Error("Failed to fetch data");
+        else {
+            const errorText = await response.text();
+            throw new Error(`Failed to fetch data: ${errorText}`);
         }
         
     }
@@ -54,7 +51,7 @@ export const getInstrumentDetails = async () => {
     }
 }
 
-// API call to post the weightage and get the quantity and total price
+// API call to post the weightage and get the quantity
 export const sendWeightage = async(weightAge, totalAmount, priceofAsset) => {
     try{
         const requestOptions = {
@@ -74,17 +71,59 @@ export const sendWeightage = async(weightAge, totalAmount, priceofAsset) => {
 
         if(response.ok) {
             const responseText = await response.text();
-            if(responseText){
-                data = JSON.parse(responseText);
-            }
-        }
-        if(data){
+            data = JSON.parse(responseText);
             return data.quantity;
         } else {
-            throw new Error("Failed to fetch the quantity data");
+            const errorText = await response.text();
+            throw new Error(`Failed to fetch data: ${errorText}`);
         }
     }
     catch(error){
         throw new Error("Not able to fetch data");
+    }
+}
+
+// API call to get the Customer details
+export const getCustomers = async() => {
+    try{
+        const response = await fetch("https://localhost:8083/");
+
+        if(response.ok){
+            const jsonData = await response.json();
+            return jsonData;
+        }
+        else {
+            const errorText = await response.text();
+            throw new Error(`Failed to fetch data: ${errorText}`);
+        }
+    }
+    catch(error){
+        return [
+{
+"name": "Muthu Kumar",
+"contactOne": "9812937972",
+"email": "muthu787@gmail.com"
+},
+{
+"name": "Raji Vinod",
+"contactOne": "7773177888",
+"email": "raji345@hotmail.com"
+},
+{
+"name": "Aadhan Madhankumar",
+"contactOne": "6213612398",
+"email": "aadhan@gmail.com"
+},
+{
+"name": "Shravan Madhankumar",
+"contactOne": "2187827889",
+"email": "shravan@hotmail.com"
+},
+{
+"name": "vimala parmasivam",
+"contactOne": "9095555569",
+"email": "vimala@gmail.com"
+}
+];
     }
 }

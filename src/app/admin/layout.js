@@ -6,7 +6,9 @@ const DashboardLayout = ({ children }) => {
   return (
     <div>
         <DashLayout>
+          <div className='mt-4 mr-2'>
             { children }
+          </div>
         </DashLayout>
         
     </div>

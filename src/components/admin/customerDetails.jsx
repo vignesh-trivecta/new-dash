@@ -3,10 +3,17 @@
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { Table } from 'flowbite-react';
+import { useEffect, useState } from "react";
+import { getCustomers } from "@/app/api/basket/route";
 
 const CustomerDetails = () => {
 
     const loggedIn = useSelector((state) => state.auth.loggedIn);
+    const [ customers, setCustomers ] = useState([]);
+    useEffect(async() => {
+        const response = await getCustomers();
+        setCustomers(response);
+    }, [])
 
     return(
         loggedIn ? (<div className="container">
@@ -33,7 +40,23 @@ const CustomerDetails = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr className="bg-white border dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
+                        {customers.map((data, index) => {
+                            return <tr className="bg-white border dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
+                                        <td className="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                                            {index+1}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            {data.name}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            {data.email}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            {data.contactOne}
+                                        </td>
+                                    </tr>
+                        })}
+                        {/* <tr className="bg-white border dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 1
                             </th>
@@ -46,78 +69,7 @@ const CustomerDetails = () => {
                             <td className="px-6 py-4">
                                 9876543210
                             </td>
-                        </tr>
-                        <tr className="bg-white border dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
-                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                2
-                            </th>
-                            <td className="px-6 py-4">
-                                Meera Velu
-                            </td>
-                            <td className="px-6 py-4">
-                                meera12@gmail.com
-                            </td>
-                            <td className="px-6 py-4">
-                                9856326985
-                            </td>
-                        </tr>
-                        <tr className="bg-white border dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
-                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                3
-                            </th>
-                            <td className="px-6 py-4">
-                                Veera Vel
-                            </td>
-                            <td className="px-6 py-4">
-                                veeragg12@gmail.com
-                            </td>
-                            <td className="px-6 py-4">
-                            7964852348
-                            </td>
-                        </tr>
-                        <tr className="bg-white border dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
-                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                4
-                            </th>
-                            <td className="px-6 py-4">
-                                Shriram Kumar
-                            </td>
-                            <td className="px-6 py-4">
-                                shrirams@gmail.com
-                            </td>
-                            <td className="px-6 py-4">
-                                9856327981
-                            </td>
-                        </tr>
-                        <tr className="bg-white border dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
-                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                5
-                            </th>
-                            <td className="px-6 py-4">
-                                Baskar Shiva
-                            </td>
-                            <td className="px-6 py-4">
-                                baskivek@gmail.com
-                            </td>
-                            <td className="px-6 py-4">
-                                9742836754
-                            </td>
-                        </tr>
-                        <tr className="bg-white border dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
-                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                6
-                            </th>
-                            <td className="px-6 py-4">
-                                Kumar Vel
-                            </td>
-                            <td className="px-6 py-4">
-                                kumarvv@gmail.com
-                            </td>
-                            <td className="px-6 py-4">
-                                8796579816
-                            </td>
-                        </tr>
-                        
+                        </tr> */}
                     </tbody>
                 </table>
             </div>
