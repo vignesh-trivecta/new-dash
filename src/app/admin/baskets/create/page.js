@@ -6,10 +6,16 @@ import { getInstrumentDetails, getEquityPrice, sendWeightage } from '@/app/api/b
 import { Button, Checkbox, Label, Modal, TextInput } from 'flowbite-react';
 import { setBasketAmount, setBasketName } from '@/store/basketSlice';
 import { useDispatch } from 'react-redux';
+import { PiCaretDownBold } from "react-icons/pi";
+import SearchDropdown from '@/utils/searchDropdown';
+import Weightage from '@/utils/weightage';
 
 
 const CreateBasket = () => {
-
+  function setEquity(e) {
+    setInputValue(e.target.value)
+    console.log(e.target.value);
+  }
   // data from redux
   const basketName = useSelector((state) => state.basket.basketName);
   const basketAmount = useSelector((state) => state.basket.basketAmount);
@@ -29,6 +35,7 @@ const CreateBasket = () => {
 
   // add row modal data
   let [equityData, setEquityData] = useState([]);
+  const [inputValue, setInputValue] = useState('');
   let [selectedEquity, setSelectedEquity] = useState('');
   let [selectedExchange, setSelectedExchange] = useState('');
   let [selectedOrderType, setSelectedOrderType] = useState('');
@@ -86,6 +93,7 @@ const CreateBasket = () => {
 
   // function to get the quantity of stocks based on weightage
   const quantityAPI = async () => {
+    console.log('quantity called..')
     const quantity = await sendWeightage(weightage, basketAmount, equityPrice);
     setQuantity(quantity);
   }
@@ -104,8 +112,8 @@ const CreateBasket = () => {
 
   return (
     <div>
-        <p className='mb-2 font-bold underline-offset-1'>Create new Basket</p>
-        {/* Investment details row */}
+      <p className='mb-2 font-bold'>Create new Basket</p>
+      {/* Investment details row */}
       <div className="grid grid-cols-3 gap-2 mb-2">
         <div className="flex items-center">
           <p className="text-black dark:text-white mr-2">Investment Amount</p>
@@ -141,64 +149,47 @@ const CreateBasket = () => {
               <div className="mb-2 block">
                 <Label htmlFor="amount" value="Enter investment amount" />
               </div>
-              <TextInput id="amount" type="number" onChange={(e) => dispatch(setBasketAmount(e.target.value))} required />
+              <TextInput id="amount" type="text" onChange={(e) => dispatch(setBasketAmount(e.target.value))} required />
             </div>
             <div className="w-full flex justify-between">
               <Button className="bg-blue-500" onClick={() => properties.setOpenModal(undefined)}>Create</Button>
-              <Button className="bg-white text-black" onClick={() => properties.setOpenModal(undefined)}>Back</Button>
+              <Button className="bg-white text-black hover:text-white border-gray-500" onClick={() => properties.setOpenModal(undefined)}>Back</Button>
             </div>
           </div>
         </Modal.Body>
       </Modal>
 
       {/* Modal pop-up to add new record */}
-      <Modal show={props.openRecordModal === 'form-elements'} popup onClose={() => props.setOpenRecordModal(undefined)} className='px-64 py-24'>
-        <Modal.Body className="p-4 flex justify-center">
-          <div className="space-y-6">
+      <Modal show={props.openRecordModal === 'form-elements'} popup onClose={() => props.setOpenRecordModal(undefined)} >
+        <Modal.Body className="p-8 flex justify-center">
+          <div className="space-y-10 w-full">
             <h3 className="text-xl font-medium text-gray-900 dark:text-white">Add row</h3>
             
             {/* 1st row */}
-            <div className='flex'>
+            <div className='flex justify-between items-center'>
               {/* Constituent */}
               <div>
                 <div className="">
-                  <Label htmlFor="name" value="Select Constituents" />
+                  <Label value="Stock" />
                 </div>
                 <div className=''>
-                  <select name="constituent" id="constituent" value={selectedEquity} onChange ={(e) => setSelectedEquity(e.target.value)} className='w-56 border border-gray-300 text-gray-500 rounded-md'>
-                    <option value="" disabled>Select</option>
-                    {
-                      equityData.map((data, index) => {
-                        return <option value={data.instrumentName}>{data.instrumentName}</option>
-                      })
-                    }
-                  </select> 
-                  {/* <Select
-                      value={selectedEquity}
-                      onChange={handleChange}
-                      options={equityData}
-                      isSearchable={true}
-                  /> */}
+                    <SearchDropdown />
                 </div>
               </div>
               {/* Exchange */}
-              <div className='ml-6'>
+              <div className='z-20 bg-white ml-4'>
                 <div className="">
-                  <Label htmlFor="exchange" value="Select Exchange" />
+                  <Label htmlFor="exchange" value="Exchange" />
                 </div>
-                <div>
-                  <select name="exchange" id="exchange" value={selectedExchange} onChange={(e) => {
-                    setSelectedExchange(e.target.value);
-                    equityPriceAPI();
-                  }} className='w-44 border border-gray-300 text-gray-500 rounded-md'>
-                    <option value="" selected disabled>Select</option>
-                    <option value="BSE">BSE</option>
-                    <option value="NSE">NSE</option>
-                  </select> 
+                <div className='flex justify-between items-center'>
+                  <input type='radio' id='bse' name='exchange' value='BSE' />
+                  <label for='bse' className='ml-2'>BSE</label>
+                  <input type='radio' id='nse' name='exchange' value='NSE' className='ml-2' />
+                  <label for='nse' className='ml-2'>NSE</label>
                 </div>
               </div>
               {/* Price */}
-              <div className='ml-6'>
+              <div className='ml-16'>
                 <div className="">
                   <Label htmlFor="price" value="Price" />
                 </div>
@@ -209,57 +200,48 @@ const CreateBasket = () => {
             </div>
             
             {/* 2nd row */}
-            <div className='flex'>
-              {/* Order Type */}
-              <div>
-                <div className="">
-                  <Label htmlFor="orderType" value="Select Order Type" />
-                </div>
-                <div className='w-56'>
-                  <select name="orderType" id="orderType" value={selectedOrderType} onChange={(e) => setSelectedOrderType(e.target.value)} className='w-56 border border-gray-300 text-gray-500 rounded-md'>
-                    <option value="" selected disabled>Select</option>
-                    <option value="Buy">Buy</option>
-                    <option value="Sell">Sell</option>
-                  </select> 
-                </div>
-              </div>
+            <div className='flex justify-between'>
               {/* Weightage */}
-              <div className='ml-6'>
+              {/* <div className=''>
                 <div className="">
-                  <Label htmlFor="weightage" value="Enter weightage %" />
+                  <Label htmlFor="weightage" value="weightage %" />
                 </div>
                 <div>
-                  <input type='number' onChange={(e) => {
+                  <input type='text' onChange={(e) => {
                     setWeightage(e.target.value);
                     quantityAPI();
-                  }} className='w-44 border border-gray-300 rounded-md' />
+                  }} className='w-32 border border-gray-300 rounded-md' />
+                </div>
+              </div> */}
+                            <Weightage quantityAPI={quantityAPI} />
+
+              {/* Order Type */}
+              <div className=''>
+                <div className="">
+                  <Label htmlFor="orderType" value="Order Type" />
+                </div>
+                <div className='flex justify-between items-center'>
+                  <input type='radio' id='buy' name='orderType' value='Buy' />
+                  <label for='buy' className='ml-2'>Buy</label>
+                  <input type='radio' id='sell' name='orderType' value='Sell' className='ml-2' />
+                  <label for='sell' className='ml-2'>Sell</label>
                 </div>
               </div>
-            </div>
             {/* Quantity */}
-            <div className='flex'>
-              <div>
+              <div className=''>
                 <div className="">
                   <Label htmlFor="quantity" value="Quantity" />
                 </div>
                 <div>
-                  <input type='number' disabled value={quantity} name='quantity' className='w-56 bg-gray-300 border border-gray-300 rounded-md' />
+                  <input type='number' disabled value={quantity} name='quantity' className='w-32 bg-gray-300 border border-gray-300 rounded-md' />
                 </div>
-              </div>
-              <div className="ml-6">
-                {/* <div>
-                  <Label htmlFor="totalAmount" value="Total Price" />
-                </div> */}
-                {/* <div>
-                  <input type='number' disabled name='totalAmount' className='w-44 bg-gray-300 border border-gray-300 rounded-md' />
-                </div> */}
               </div>
             </div>
             
             {/* Modal buttons */}
-            <div className="flex justify-between">
+            <div className="flex justify-center">
               <Button className="bg-blue-500" onClick={() => createRecord()}>Create</Button>
-              <Button className="bg-white border-gray-500 text-black" onClick={() => props.setOpenRecordModal(undefined)}>Back</Button>
+              <Button className="ml-4 bg-white border-gray-500 text-black hover:text-white" onClick={() => props.setOpenRecordModal(undefined)}>Back</Button>
             </div>
           </div>
           
@@ -450,18 +432,20 @@ const CreateBasket = () => {
           </tbody>
         </table>
       </div>
-        <div className='mt-6 flex justify-center'>
-            <Button onClick={() => props.setOpenRecordModal('form-elements')} className="bg-blue-500 mr-2">
-            <svg class="w-4 h-4 text-white" ariaHidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-            </svg>
-            &nbsp; Add record
-          </Button>
-          <button className='p-2 border border-gray-300 rounded-md bg-green-500 text-white hover:bg-green-700' onClick={() => {
-            dispatch(setBasketAmount(null));
-            dispatch(setBasketName(''));
-          }}>Submit</button>
-        </div>
+
+      {/* Bottom buttons */}
+      <div className='mt-6 flex justify-center'>
+          <Button onClick={() => props.setOpenRecordModal('form-elements')} className="bg-blue-500 mr-2">
+          <svg class="w-4 h-4 text-white" ariaHidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+          </svg>
+          &nbsp; Add record
+        </Button>
+        <button className='p-2 border border-gray-300 rounded-md bg-green-500 text-white hover:bg-green-700' onClick={() => {
+          dispatch(setBasketAmount(null));
+          dispatch(setBasketName(''));
+        }}>Submit</button>
+      </div>
     </div>
   )
 }

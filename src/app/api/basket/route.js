@@ -30,7 +30,7 @@ export const getEquityPrice = async (constituent, exchange) => {
 
 }
 
-// API call to get the stocks and exchange details
+// API call to get the stocks details
 export const getInstrumentDetails = async () => {
     try{
         const response = await fetch("http://localhost:8083/trading/instruments")
@@ -47,7 +47,30 @@ export const getInstrumentDetails = async () => {
     }
     catch(error){
         console.log(error)
-        throw new Error("Not able to fetch data");
+        return [
+
+            {"instrumentName": "ASIAN PAINTS"},
+
+            {"instrumentName": "YES BANK"},
+
+           { "instrumentName": "SUZLON ENERGY"},
+
+
+            {"instrumentName": "RELIANCE POWER"},
+
+            {"instrumentName": "OIL AND NATURAL GAS CORP"},
+
+            {"instrumentName": "DCB BANK"},
+            {"instrumentName": "D BANK"},
+            {"instrumentName": "DdsCB BANK"},
+            {"instrumentName": "DCssB BANK"},
+            {"instrumentName": "DCBs BANK"},
+            {"instrumentName": "DssCB BANK"},
+            {"instrumentName": "DCBss BANK"},
+            {"instrumentName": "DCsssB BANK"},
+
+           { "instrumentName": "KARUR VYSYA BANK"
+            }]
     }
 }
 

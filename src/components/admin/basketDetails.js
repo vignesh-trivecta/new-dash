@@ -2,8 +2,7 @@
 
 import Link from "next/link";
 import { useSelector } from "react-redux";
-import { Table } from 'flowbite-react';
-
+import { segregate } from "@/utils/priceSegregator";
 const BasketDetails = () => {
 
     const loggedIn = useSelector((state) => state.auth.loggedIn);
@@ -42,7 +41,7 @@ const BasketDetails = () => {
                                 10
                             </td>
                             <td className="px-6 py-4">
-                                500000
+                                {segregate(500000)}
                             </td>
                         </tr>
                         <tr className="bg-white border dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
@@ -56,7 +55,7 @@ const BasketDetails = () => {
                                 8
                             </td>
                             <td className="px-6 py-4">
-                                300000
+                                {segregate(300000)}
                             </td>
                         </tr>
                         <tr className="bg-white border dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
@@ -70,7 +69,7 @@ const BasketDetails = () => {
                                 5
                             </td>
                             <td className="px-6 py-4">
-                                100000
+                                {segregate(100000)}
                             </td>
                         </tr>
                         <tr className="bg-white border dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
@@ -84,7 +83,7 @@ const BasketDetails = () => {
                                 10
                             </td>
                             <td className="px-6 py-4">
-                                600000
+                                {segregate(600000)}
                             </td>
                         </tr>
                         <tr className="bg-white border dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
@@ -98,7 +97,7 @@ const BasketDetails = () => {
                                 9
                             </td>
                             <td className="px-6 py-4">
-                                1500000
+                                {segregate(1500000)}
                             </td>
                         </tr>
                         <tr className="bg-white border dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
@@ -112,7 +111,7 @@ const BasketDetails = () => {
                                 4
                             </td>
                             <td className="px-6 py-4">
-                                4000000
+                                {segregate(4000000)}
                             </td>
                         </tr>
                         
