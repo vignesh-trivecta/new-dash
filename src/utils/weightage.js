@@ -1,30 +1,42 @@
+'use client';
 import React, {useState, useEffect} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setQuantity, setWeightage } from '@/store/updateRecordSlice';
+import { sendWeightage } from '@/app/api/basket/route';
+import { setBasketAmount } from '@/store/basketSlice';
 
 
- const Weightage = ({quantityAPI}) => {
+const Weightage = () => {
+    
+    const weightage = useSelector((state) => state.add.weightage);
+    const quantity = useSelector((state) => state.add.quantity);
+    const dispatch = useDispatch();
 
-    const [weightage, setWeightage] = useState(null);
+    const [inputValue, setInputValue] = useState('');
 
     // //function to get the quantity of stocks based on weightage
-    // const quantityAPI = async () => {
-    // const quantity = await sendWeightage(weightage, basketAmount, equityPrice);
-    //     setQuantity(quantity);
-    // }
+    const quantityAPI = async () => {
+        const quantity = await sendWeightage(weightage, setBasketAmount, 111);
+        // dispatch(setQuantity(quantity));
+    }
+
+    // Event handler
+    const handleChange = (e) => {
+        e.preventDefault();
+        const newValue = e.target.value;
+        setInputValue(e.target.value);
+        dispatch(setWeightage(newValue));
+        quantityAPI();
+    };
 
     return(
         <div className=''>
-            <div className="font-normal">
-                <label>Weightage %</label>
-            </div>
-            <div>
-                <input type='text' 
-                    onChange={(e) => {
-                    setWeightage(e.target.value);
-                    quantityAPI();
-                    }} 
-                    className='w-32 border border-gray-300 rounded-md' 
-                />
-            </div>
+            <input type='number' 
+                value={inputValue}
+                onChange={handleChange} 
+                className='w-full border border-gray-200 rounded-md' 
+                autoFocus
+            />
         </div>
     )
 }

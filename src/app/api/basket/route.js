@@ -1,3 +1,92 @@
+// API call to fetch the table records
+export const getRecords = async() => {
+    try{
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+
+                
+            })
+        };
+        let data;
+        const response = await fetch("http://localhost:8083/", requestOptions);
+
+        if (response.ok) {
+            const responseText = await response.text();
+            data = JSON.parse(responseText);
+            return data;
+        } else {
+            const errorText = await response.text();
+            throw new Error(`Failed to fetch data: ${errorText}`);
+        }
+    }
+    catch(error){
+        return [
+            {
+                instrumentName: 'ASIAN PAINTS',
+                exchange: 'BSE',
+                orderType: 'Buy',
+                weightage: 1.20,
+                price: 88.22,
+                quantity: 12,
+            },
+            {
+                instrumentName: 'YES BANK',
+                exchange: 'NSE',
+                orderType: 'Buy',
+                weightage: 5.4,
+                price: 72.50,
+                quantity: 5,
+            },
+            {
+                instrumentName: 'SUZLON ENERGY',
+                exchange: 'BSE',
+                orderType: 'SELL',
+                weightage: 2.5,
+                price: 54,
+                quantity: 8,
+            }
+        ]
+    }
+}
+
+// API  call to edit a record in table
+
+
+
+// API call to delete a record from table
+export const deleteRecord = async(index) => {
+    try{
+        const requestOptions = {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "index": index,
+            })
+        }
+        const response = await fetch("http://localhost:8083/", requestOptions);
+
+        if (response.ok) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+
+
+
+
+
 // API call for getting the price of Equity
 export const getEquityPrice = async (constituent, exchange) => {
     try {
@@ -25,7 +114,7 @@ export const getEquityPrice = async (constituent, exchange) => {
         }
     }
     catch(error){
-        throw new Error("Not able to fetch data");
+        console.log(error);
     }
 
 }
@@ -46,31 +135,9 @@ export const getInstrumentDetails = async () => {
         
     }
     catch(error){
-        console.log(error)
         return [
-
-            {"instrumentName": "ASIAN PAINTS"},
-
-            {"instrumentName": "YES BANK"},
-
-           { "instrumentName": "SUZLON ENERGY"},
-
-
-            {"instrumentName": "RELIANCE POWER"},
-
-            {"instrumentName": "OIL AND NATURAL GAS CORP"},
-
-            {"instrumentName": "DCB BANK"},
-            {"instrumentName": "D BANK"},
-            {"instrumentName": "DdsCB BANK"},
-            {"instrumentName": "DCssB BANK"},
-            {"instrumentName": "DCBs BANK"},
-            {"instrumentName": "DssCB BANK"},
-            {"instrumentName": "DCBss BANK"},
-            {"instrumentName": "DCsssB BANK"},
-
-           { "instrumentName": "KARUR VYSYA BANK"
-            }]
+            "ASIAN PAINTS", "YES BANK", "SUZLON ENERGY", "RELIANCE POWER", "OIL AND NATURAL GAS CORP",
+            "DCB BANK", "KARUR VYSYA BANK"];
     }
 }
 
@@ -98,18 +165,24 @@ export const sendWeightage = async(weightAge, totalAmount, priceofAsset) => {
             return data.quantity;
         } else {
             const errorText = await response.text();
-            throw new Error(`Failed to fetch data: ${errorText}`);
+            return 12;
         }
     }
     catch(error){
-        throw new Error("Not able to fetch data");
+        return 12;
     }
 }
 
 // API call to get the Customer details
 export const getCustomers = async() => {
     try{
-        const response = await fetch("https://localhost:8083/");
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        const response = await fetch("https://localhost:8083/", requestOptions);
 
         if(response.ok){
             const jsonData = await response.json();

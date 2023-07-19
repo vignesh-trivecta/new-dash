@@ -4,10 +4,12 @@ import userSlice from "./userSlice";
 import dataSlice from "./dataSlice";
 import basketSlice from "./basketSlice";
 import eventSlice from "./eventSlice";
+import addRecordSlice from "./addRecordSlice";
 import storage from 'redux-persist/lib/storage';
 import thunk from "redux-thunk";
 import { combineReducers } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from 'redux-persist';
+// import updateRecordSlice from "./updateRecordSlice";
 
 // combinig all the slices to a reducer
 const reducers = combineReducers({
@@ -16,6 +18,8 @@ const reducers = combineReducers({
     data: dataSlice,
     basket: basketSlice,
     event: eventSlice,
+    add: addRecordSlice,
+    // update: updateRecordSlice
 });
 
 // configuration for persiting data

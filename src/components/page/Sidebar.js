@@ -51,17 +51,24 @@ const ExampleSidebar = function () {
                 label="Baskets"
               >
                     <Sidebar.Item 
-                        icon={HiShoppingCart}
+                        icon={HiPencilAlt}
                     >
-                        <Link href="/admin/baskets/">
-                            View                        
+                        <Link href="/admin/baskets/create">
+                            Create                        
                         </Link>
                     </Sidebar.Item>
                     <Sidebar.Item 
                         icon={HiPencilAlt}
                     >
                         <Link href="/admin/baskets/create">
-                            Create                        
+                            Clone                        
+                        </Link>
+                    </Sidebar.Item>
+                    <Sidebar.Item 
+                        icon={HiShoppingCart}
+                    >
+                        <Link href="/admin/baskets/">
+                            View                        
                         </Link>
                     </Sidebar.Item>
               </Sidebar.Collapse>
