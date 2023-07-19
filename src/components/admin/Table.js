@@ -14,6 +14,7 @@ const Table = ({record}) => {
   let [responseRecord, setResponseRecord] = useState([]);
 
   const dispatch = useDispatch();
+  const basketName = useSelector((state) => state.basket.basketName);
   // const instrumentName = useSelector((state) => state.add.instrumentName);
   // const exchange = useSelector((state) => state.add.exchange);
   // const orderType = useSelector((state) => state.add.orderType);
@@ -58,17 +59,17 @@ const Table = ({record}) => {
   return (
     <div className='container mx-auto my-8'>
       <div className='flex shadow border-b'>
-         <table className='min-w-full'>
-          <thead className='bg-gray-200'>
+         <table className="w-full text-sm text-left text-gray-900 dark:text-gray-400">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              <th className='text-center font-medium text-black uppercase tracking-wide py-3 px-6'>S.No</th>
-              <th className='text-center font-medium text-black uppercase tracking-wide py-3 px-6'>Stock</th>
-              <th className='text-center font-medium text-black uppercase tracking-wide py-3 px-6'>Exchange</th>
-              <th className='text-center font-medium text-black uppercase tracking-wide py-3 px-6'>Order Type</th>
-              <th className='text-center font-medium text-black uppercase tracking-wide py-3 px-6'>Weights %</th>
-              <th className='text-center font-medium text-black uppercase tracking-wide py-3 px-6'>Price &#8377;</th>
-              <th className='text-center font-medium text-black uppercase tracking-wide py-3 px-6'>Quantity</th>
-              <th className='text-center font-medium text-black uppercase tracking-wide py-3 px-6'>Actions</th>
+              <th  scope="col" className="px-6 py-3">S.No</th>
+              <th  scope="col" className="px-6 py-3">Stock</th>
+              <th  scope="col" className="px-6 py-3">Exchange</th>
+              <th  scope="col" className="px-6 py-3">Order Type</th>
+              <th  scope="col" className="px-6 py-3">Weights %</th>
+              <th  scope="col" className="px-6 py-3">Price &#8377;</th>
+              <th  scope="col" className="px-6 py-3">Quantity</th>
+              <th  scope="col" className="px-6 py-3">Actions</th>
             </tr>
           </thead>
           { 

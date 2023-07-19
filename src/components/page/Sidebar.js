@@ -7,8 +7,10 @@ import {
   HiShoppingBag,
   HiPencilAlt,
   HiUserGroup,
-  HiShoppingCart
+  HiOutlineViewList
 } from "react-icons/hi";
+import { FaRegClone } from "react-icons/fa";
+import { AiOutlineFolderView } from "react-icons/ai";
 
 const ExampleSidebar = function () {
   const [currentPage, setCurrentPage] = useState("");
@@ -58,14 +60,14 @@ const ExampleSidebar = function () {
                         </Link>
                     </Sidebar.Item>
                     <Sidebar.Item 
-                        icon={HiPencilAlt}
+                        icon={FaRegClone}
                     >
                         <Link href="/admin/baskets/create">
                             Clone                        
                         </Link>
                     </Sidebar.Item>
                     <Sidebar.Item 
-                        icon={HiShoppingCart}
+                        icon={AiOutlineFolderView}
                     >
                         <Link href="/admin/baskets/">
                             View                        

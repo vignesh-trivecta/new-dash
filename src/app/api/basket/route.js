@@ -53,6 +53,38 @@ export const getRecords = async() => {
     }
 }
 
+
+// API call to add a new record
+export const addRecord = async({record}) => {
+    try{
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                record
+            })
+        };
+        let data;
+        const response = await fetch("http://localhost:8083/basket/temp", requestOptions);
+
+        if (response.ok) {
+            const responseText = await response.text();
+            data = JSON.parse(responseText);
+            console.log("Response ok", data)
+            return data;
+        } else {
+            const errorText = await response.text();
+            throw new Error(`Failed to fetch data: ${errorText}`);
+        }
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+
+
 // API  call to edit a record in table
 
 
@@ -88,7 +120,7 @@ export const deleteRecord = async(index) => {
 
 
 // API call for getting the price of Equity
-export const getEquityPrice = async (constituent, exchange) => {
+export const getEquityPrice = async (instrumentName, exchange) => {
     try {
         const requestOptions = {
             method: 'POST',
@@ -96,7 +128,7 @@ export const getEquityPrice = async (constituent, exchange) => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                "instrumentName": constituent,
+                "instrumentName": instrumentName,
                 "exchangeValue": exchange,
             })
         };
@@ -107,6 +139,7 @@ export const getEquityPrice = async (constituent, exchange) => {
         if (response.ok) {
             const responseText = await response.text();
             data = JSON.parse(responseText);
+            console.log("Response ok", data);
             return data.price;
         } else {
             const errorText = await response.text();
@@ -142,7 +175,7 @@ export const getInstrumentDetails = async () => {
 }
 
 // API call to post the weightage and get the quantity
-export const sendWeightage = async(weightAge, totalAmount, priceofAsset) => {
+export const sendWeightage = async(weightage, totalAmount, priceofAsset) => {
     try{
         const requestOptions = {
             method: 'POST',
@@ -150,7 +183,7 @@ export const sendWeightage = async(weightAge, totalAmount, priceofAsset) => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                "weightAge": weightAge,
+                "weightAge": weightage,
                 "totalAmount": totalAmount,
                 "priceofAsset": priceofAsset,
             })

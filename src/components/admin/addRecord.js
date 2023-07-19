@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import Weightage from '@/utils/weightage';
 import Table from './Table';
+import { addRecord } from '@/app/api/basket/route';
+import { setExchange, setOrderType, setPrice } from '@/store/addRecordSlice';
 
 const AddRecord = () => {
 
@@ -15,9 +17,14 @@ const AddRecord = () => {
 
     const dispatch = useDispatch();
     const selectedStock = useSelector((state) => state.data.selectedStock);
+    const weightage = useSelector((state) => state.add.weightage);
+    const basketName = useSelector((state) => state.basket.basketName);
+    const basketAmount = useSelector((state) => state.basket.basketAmount);
+    const price = useSelector((state) => state.add.price);
+    const exchange = useSelector((state) => state.add.exchange);
+    const orderType = useSelector((state) => state.add.orderType);
+    const quantity = useSelector((state) => state.add.quantity);
 
-    const [exchange, setExchange] = useState("");
-    const [orderType, setOrderType] = useState("");
     const [record, setRecord] = useState({
         instrumentName: "",
         exchange: "",
@@ -26,18 +33,31 @@ const AddRecord = () => {
         quantity: "",
     });
 
+    const handleExchange = (e) => {
+        const fetchPrice = async () => {
+            const data = await getEquityPrice(selectedStock, exchange);
+            setPrice(data);
+        }
+        fetchPrice();
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
         setRecord({
+            basketName: basketName,
             instrumentName: selectedStock,
             exchange: exchange,
-            weightage: weightage,
             orderType: orderType,
-            quantity: "",
+            quantity: quantity,
+            weightage: weightage,
+            basketAmount: basketAmount,            
         })
         // need to make the api call here
         // by removing setRecord or can use directly
         // the response received needs to be mapped to Table
+        const postData = async() => {
+            const data = await addRecord(record);
+        }
     }
 
 
@@ -59,14 +79,20 @@ const AddRecord = () => {
 
                                 <div className='col-start-3 row-start-1 flex flex-col ml-8'>
                                     <Label htmlFor="price" value="Price" className='' />
-                                    <input disabled id='price' name="price" type="number" className='w-full bg-gray-200 rounded-md border border-gray-200' />
+                                    <input disabled id='price' name="price" value={price} type="number" className='w-full bg-gray-200 rounded-md border border-gray-200' />
                                 </div>
 
                                 <Label value="Exchange" className='col-start-1 row-start-2 text-md' />
                                 <div className=' col-start-2 row-start-2'>
-                                    <input id="bse" name="exchange" type='radio' value="BSE" onChange={() => setExchange("BSE")} />
+                                    <input id="bse" name="exchange" type='radio' value="BSE" onChange={(e) => {
+                                        setExchange("BSE");
+                                        handleExchange(e);
+                                    }} />
                                     <label htmlFor='bse' className='ml-1'>BSE</label>
-                                    <input id="nse" name="exchange" type='radio' value="NSE" className='ml-1' onChange={() => setExchange("NSE")} />
+                                    <input id="nse" name="exchange" type='radio' value="NSE" className='ml-1' onChange={() => {
+                                        setExchange("NSE");
+                                        handleExchange(e);
+                                    }} />
                                     <label htmlFor='nse' className='ml-1'>NSE</label>
                                 </div>
 
@@ -85,7 +111,7 @@ const AddRecord = () => {
 
                                 <div className='col-start-3 row-start-3 flex flex-col ml-8'>
                                     <Label htmlFor='quantity' value="Quantity" />
-                                    <input disabled id='quantity' name='quantity' type="number" className='w-full bg-gray-200 border border-gray-200 rounded-md' />
+                                    <input disabled id='quantity' name='quantity' value={quantity} type="number" className='w-full bg-gray-200 border border-gray-200 rounded-md' />
                                 </div>
 
 

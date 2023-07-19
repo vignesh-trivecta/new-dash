@@ -9,10 +9,14 @@ const CustomerDetails = () => {
 
     const loggedIn = useSelector((state) => state.auth.loggedIn);
     const [ customers, setCustomers ] = useState([]);
-    useEffect(async() => {
-        const response = await getCustomers();
-        setCustomers(response);
-    }, [])
+    useEffect(() => {
+        const fetchData = async () => {
+          const customersData = await getCustomers();
+          setCustomers(customersData);
+        };
+      
+        fetchData();
+      }, []);      
 
     return(
         loggedIn ? (<div className="container">

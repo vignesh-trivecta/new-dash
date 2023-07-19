@@ -3,29 +3,29 @@ import React from 'react'
 
 const BasketRecords = ({ record, index, deleteRecord, updateRecord }) => {
   return (
-        <tr key={index} className='hover:bg-gray-100'>
-              <td className='text-center px-6 py-4 whitespace-nowrap'>
+        <tr key={index} className="bg-white border dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
+              <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                 <div className='text-sm text-gray-700'>{index}</div>
-              </td>
-              <td className='text-center px-6 py-4 whitespace-nowrap'>
+              </th>
+              <td className="px-6 py-4">
                 <div className='text-sm text-gray-700'>{record.instrumentName}</div>
               </td>
-              <td className='text-center px-6 py-4 whitespace-nowrap'>
+              <td className="px-6 py-4">
                 <div className='text-sm text-gray-700'>{record.exchange}</div>
               </td>
-              <td className='text-center px-6 py-4 whitespace-nowrap'>
+              <td className="px-6 py-4">
                 <div className='text-sm text-gray-700'>{record.orderType}</div>
               </td>
-              <td className='text-right px-6 py-4 whitespace-nowrap'>
+              <td className="px-6 py-4">
                 <div className='text-sm text-gray-700'>{record.weightage}</div>              
               </td>
-              <td className='text-right px-6 py-4 whitespace-nowrap'>
+              <td className="px-6 py-4">
                 <div className='text-sm text-gray-700'>{record.price}</div>
               </td>
-              <td className='text-right px-6 py-4 whitespace-nowrap'>
+              <td className="px-6 py-4">
                 <div className='text-sm text-gray-700'>{record.quantity}</div>
               </td>
-              <td className='text-left px-6 py-4 whitespace-nowrap'>
+              <td className="px-6 py-4">
                 <Link
                 href="#"
                 onClick={(e) => {

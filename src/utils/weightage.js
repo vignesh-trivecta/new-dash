@@ -1,15 +1,14 @@
 'use client';
 import React, {useState, useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setQuantity, setWeightage } from '@/store/updateRecordSlice';
 import { sendWeightage } from '@/app/api/basket/route';
 import { setBasketAmount } from '@/store/basketSlice';
+import { setQuantity, setWeightage } from '@/store/addRecordSlice';
 
 
 const Weightage = () => {
     
     const weightage = useSelector((state) => state.add.weightage);
-    const quantity = useSelector((state) => state.add.quantity);
     const dispatch = useDispatch();
 
     const [inputValue, setInputValue] = useState('');
@@ -17,7 +16,7 @@ const Weightage = () => {
     // //function to get the quantity of stocks based on weightage
     const quantityAPI = async () => {
         const quantity = await sendWeightage(weightage, setBasketAmount, 111);
-        // dispatch(setQuantity(quantity));
+        dispatch(setQuantity(quantity));
     }
 
     // Event handler

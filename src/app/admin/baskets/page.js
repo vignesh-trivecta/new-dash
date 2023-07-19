@@ -21,8 +21,6 @@ const Customers = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
-
-
   function navigate() {
     router.push('/admin/baskets/create');
   }

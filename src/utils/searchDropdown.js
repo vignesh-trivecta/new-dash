@@ -24,10 +24,14 @@ export default function SearchDropdown({ id }) {
             .includes(query.toLowerCase().replace(/\s+/g, ""))
         )
     
-    useEffect( async() => {
+  useEffect(() => {
+    const fetchData = async () => {
       const list = await getInstrumentDetails();
       setStocksList(list);
-    }, [])
+    };
+  
+    fetchData();
+  }, []);
 
   return (
     <div className="">
