@@ -9,13 +9,15 @@ import { setQuantity, setWeightage } from '@/store/addRecordSlice';
 const Weightage = () => {
     
     const weightage = useSelector((state) => state.add.weightage);
+    const price = useSelector((state) => state.add.price);
+    const basketAmount = useSelector((state) => state.basket.basketAmount);
     const dispatch = useDispatch();
 
     const [inputValue, setInputValue] = useState('');
 
     // //function to get the quantity of stocks based on weightage
     const quantityAPI = async () => {
-        const quantity = await sendWeightage(weightage, setBasketAmount, 111);
+        const quantity = await sendWeightage(weightage, basketAmount, price);
         dispatch(setQuantity(quantity));
     }
 

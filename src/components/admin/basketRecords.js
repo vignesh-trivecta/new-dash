@@ -5,25 +5,25 @@ const BasketRecords = ({ record, index, deleteRecord, updateRecord }) => {
   return (
         <tr key={index} className="bg-white border dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
               <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                <div className='text-sm text-gray-700'>{index}</div>
+                <div className='text-sm text-gray-700'>{record.recId}</div>
               </th>
               <td className="px-6 py-4">
-                <div className='text-sm text-gray-700'>{record.instrumentName}</div>
+                <div className='text-sm text-gray-700'>{record.isinNo}</div>
               </td>
               <td className="px-6 py-4">
-                <div className='text-sm text-gray-700'>{record.exchange}</div>
+                <div className='text-sm text-gray-700'>{record.exchangeUsed}</div>
               </td>
               <td className="px-6 py-4">
-                <div className='text-sm text-gray-700'>{record.orderType}</div>
+                <div className='text-sm text-gray-700'>{record.transType}</div>
               </td>
               <td className="px-6 py-4">
-                <div className='text-sm text-gray-700'>{record.weightage}</div>              
+                <div className='text-sm text-gray-700'>{record.weightValue}</div>              
               </td>
               <td className="px-6 py-4">
-                <div className='text-sm text-gray-700'>{record.price}</div>
+                <div className='text-sm text-gray-700'>{record.priceValue}</div>
               </td>
               <td className="px-6 py-4">
-                <div className='text-sm text-gray-700'>{record.quantity}</div>
+                <div className='text-sm text-gray-700'>{record.quantityValue}</div>
               </td>
               <td className="px-6 py-4">
                 <Link

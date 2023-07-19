@@ -1,22 +1,26 @@
 // API call to fetch the table records
-export const getRecords = async() => {
+export const getRecords = async(adminId, basketName) => {
     try{
         const requestOptions = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-
+            body: JSON.stringify(
+                {
+                      "adminId": adminId,
+                      "basketName": basketName
+                    }
                 
-            })
+            )
         };
         let data;
-        const response = await fetch("http://localhost:8083/", requestOptions);
+        const response = await fetch("http://localhost:8083/basket/temp/list", requestOptions);
 
         if (response.ok) {
             const responseText = await response.text();
             data = JSON.parse(responseText);
+            console.log(data)
             return data;
         } else {
             const errorText = await response.text();
@@ -24,32 +28,7 @@ export const getRecords = async() => {
         }
     }
     catch(error){
-        return [
-            {
-                instrumentName: 'ASIAN PAINTS',
-                exchange: 'BSE',
-                orderType: 'Buy',
-                weightage: 1.20,
-                price: 88.22,
-                quantity: 12,
-            },
-            {
-                instrumentName: 'YES BANK',
-                exchange: 'NSE',
-                orderType: 'Buy',
-                weightage: 5.4,
-                price: 72.50,
-                quantity: 5,
-            },
-            {
-                instrumentName: 'SUZLON ENERGY',
-                exchange: 'BSE',
-                orderType: 'SELL',
-                weightage: 2.5,
-                price: 54,
-                quantity: 8,
-            }
-        ]
+        console.log(error)
     }
 }
 
@@ -155,10 +134,11 @@ export const getEquityPrice = async (instrumentName, exchange) => {
 // API call to get the stocks details
 export const getInstrumentDetails = async () => {
     try{
-        const response = await fetch("http://localhost:8083/trading/instruments")
+        const response = await fetch("http://localhost:8083/instruments")
         
         if(response.ok){
             const jsonData = await response.json();
+            console.log(jsonData)
             return jsonData;
         }
         else {
@@ -195,14 +175,15 @@ export const sendWeightage = async(weightage, totalAmount, priceofAsset) => {
         if(response.ok) {
             const responseText = await response.text();
             data = JSON.parse(responseText);
+            console.log(data)
             return data.quantity;
         } else {
             const errorText = await response.text();
-            return 12;
+            console.log(errorText);
         }
     }
     catch(error){
-        return 12;
+        console.log(error);
     }
 }
 

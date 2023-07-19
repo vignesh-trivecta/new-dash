@@ -18,7 +18,7 @@ export default function SearchDropdown({ id }) {
     query === ""
       ? stocksList
       : stocksList.filter((stock) =>
-          stock
+          stock.instrumentName
             .toLowerCase()
             .replace(/\s+/g, "")
             .includes(query.toLowerCase().replace(/\s+/g, ""))
@@ -33,9 +33,14 @@ export default function SearchDropdown({ id }) {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    console.log(selectedStock);
+  }, [selectedStock])
+  
+
   return (
     <div className="">
-      <Combobox value={selectedStock} onChange={(newValue) => dispatch(setSelectedStock(newValue))}>
+      <Combobox value={selectedStock} onChange={(newValue) => {dispatch(setSelectedStock(newValue))}}>
         <div className="relative mt-1">
           <div className="relative w-full cursor-default  rounded-lg bg-white text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
             <Combobox.Input
@@ -73,18 +78,18 @@ export default function SearchDropdown({ id }) {
                         active ? "bg-teal-600 text-white" : "text-gray-900"
                       }`
                     }
-                    value={stock}
+                    value={stock.instrumentName}
                   >
-                    {({ selectedStock, active }) => (
+                    {({ selected, active }) => (
                       <>
                         <span
                           className={`block truncate ${
-                            selectedStock ? "font-medium" : "font-normal"
+                            selected ? "font-medium" : "font-normal"
                           }`}
                         >
-                          {stock}
+                          {stock.instrumentName}
                         </span>
-                        {selectedStock ? (
+                        {selected ? (
                           <span
                             className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
                               active ? "text-white" : "text-teal-600"

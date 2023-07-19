@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import Weightage from '@/utils/weightage';
 import Table from './Table';
-import { addRecord } from '@/app/api/basket/route';
+import { addRecord, getEquityPrice } from '@/app/api/basket/route';
 import { setExchange, setOrderType, setPrice } from '@/store/addRecordSlice';
 
 const AddRecord = () => {
@@ -33,10 +33,11 @@ const AddRecord = () => {
         quantity: "",
     });
 
-    const handleExchange = (e) => {
+    const handleExchange = () => {
         const fetchPrice = async () => {
             const data = await getEquityPrice(selectedStock, exchange);
-            setPrice(data);
+            dispatch(setPrice(data));
+            console.log(selectedStock, exchange);
         }
         fetchPrice();
     }
@@ -44,13 +45,16 @@ const AddRecord = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         setRecord({
-            basketName: basketName,
-            instrumentName: selectedStock,
-            exchange: exchange,
-            orderType: orderType,
-            quantity: quantity,
-            weightage: weightage,
-            basketAmount: basketAmount,            
+            "adminId": "admin12",
+    "basketName": "NewBasket719",
+    "instrumentName": "YES BANK",
+    "exchangeUsed": "NSE",
+    "orderType": "Limit",
+    "transType": "Sell",
+    "quantity": 150,
+    "weightage": 1.3,
+    "price": 300.75,
+    "basketInvAmount": 45112.50           
         })
         // need to make the api call here
         // by removing setRecord or can use directly
@@ -85,13 +89,13 @@ const AddRecord = () => {
                                 <Label value="Exchange" className='col-start-1 row-start-2 text-md' />
                                 <div className=' col-start-2 row-start-2'>
                                     <input id="bse" name="exchange" type='radio' value="BSE" onChange={(e) => {
-                                        setExchange("BSE");
-                                        handleExchange(e);
+                                        dispatch(setExchange("BSE"));
+                                        handleExchange();
                                     }} />
                                     <label htmlFor='bse' className='ml-1'>BSE</label>
                                     <input id="nse" name="exchange" type='radio' value="NSE" className='ml-1' onChange={() => {
-                                        setExchange("NSE");
-                                        handleExchange(e);
+                                        dispatch(setExchange("NSE"));
+                                        handleExchange();
                                     }} />
                                     <label htmlFor='nse' className='ml-1'>NSE</label>
                                 </div>

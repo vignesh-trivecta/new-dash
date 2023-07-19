@@ -25,7 +25,7 @@ const Table = ({record}) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await getRecords();
+      const response = await getRecords('admin12', 'NewBasket719');
       setRecords(response);
     }
     fetchData();
