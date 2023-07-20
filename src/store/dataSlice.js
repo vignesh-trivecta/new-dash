@@ -15,7 +15,7 @@ const dataSlice = createSlice({
             state.data = action.payload;
         },
         setSelectedStock: (state, action) => {
-            state.data = action.payload;
+            state.selectedStock = action.payload;
         }
     }
 });

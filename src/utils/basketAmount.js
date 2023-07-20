@@ -25,7 +25,7 @@ const BasketAmount = () => {
     <div>
       <input
         type='text'
-        className='w-32 rounded-md border-gray-300'
+        className='w-24 rounded-md border-gray-300'
         onChange={handleChange}
         ref={inputRef}
       />

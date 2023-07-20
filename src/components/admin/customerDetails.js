@@ -19,7 +19,7 @@ const CustomerDetails = () => {
       }, []);      
 
     return(
-        loggedIn ? (<div className="container">
+       <div className="container">
 
             <h5 className="font-bold">Customer Details</h5>
 
@@ -64,12 +64,7 @@ const CustomerDetails = () => {
             </div>
             
 
-        </div>)
-        : (<div className="d-flex row container m-5">
-            <p>No authorized Access</p>
-            <p>Please <Link href='../auth/login'>login</Link></p>
-          </div>
-        )
+        </div>
     );
 };
 

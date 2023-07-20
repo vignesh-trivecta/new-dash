@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 import Weightage from '@/utils/weightage';
 import Table from './Table';
 import { addRecord, getEquityPrice } from '@/app/api/basket/route';
-import { setExchange, setOrderType, setPrice } from '@/store/addRecordSlice';
+import { setExchange, setOrderType, setPrice, setQuantity, setSelectedStock, setWeightage } from '@/store/addRecordSlice';
 
 const AddRecord = () => {
 
@@ -16,7 +16,7 @@ const AddRecord = () => {
     const props = { openModal, setOpenModal };
 
     const dispatch = useDispatch();
-    const selectedStock = useSelector((state) => state.data.selectedStock);
+    const selectedStock = useSelector((state) => state.add.selectedStock);
     const weightage = useSelector((state) => state.add.weightage);
     const basketName = useSelector((state) => state.basket.basketName);
     const basketAmount = useSelector((state) => state.basket.basketAmount);
@@ -24,6 +24,9 @@ const AddRecord = () => {
     const exchange = useSelector((state) => state.add.exchange);
     const orderType = useSelector((state) => state.add.orderType);
     const quantity = useSelector((state) => state.add.quantity);
+    const adminId = useSelector((state) => state.user.user);
+
+    const [fectch, setFetch] = useState(false);
 
     const [record, setRecord] = useState({
         instrumentName: "",
@@ -33,7 +36,8 @@ const AddRecord = () => {
         quantity: "",
     });
 
-    const handleExchange = () => {
+    const handleExchange = (exchange) => {
+        dispatch(setExchange(exchange));
         const fetchPrice = async () => {
             const data = await getEquityPrice(selectedStock, exchange);
             dispatch(setPrice(data));
@@ -45,24 +49,33 @@ const AddRecord = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         setRecord({
-            "adminId": "admin12",
-    "basketName": "NewBasket719",
-    "instrumentName": "YES BANK",
-    "exchangeUsed": "NSE",
-    "orderType": "Limit",
-    "transType": "Sell",
-    "quantity": 150,
-    "weightage": 1.3,
-    "price": 300.75,
-    "basketInvAmount": 45112.50           
+            "adminId": adminId,
+            "basketName": basketName,
+            "instrumentName": selectedStock,
+            "exchangeUsed": exchange,
+            "orderType": "Limit",
+            "transType": orderType,
+            "quantity": quantity,
+            "weightage": Number(weightage),
+            "price": price,
+            "basketInvAmount": Number(basketAmount)           
         })
         // need to make the api call here
         // by removing setRecord or can use directly
         // the response received needs to be mapped to Table
         const postData = async() => {
-            const data = await addRecord(record);
+            const data = await addRecord(adminId, basketName,selectedStock, exchange, orderType, quantity, weightage, price, basketAmount);
+            if(data.status == 200){
+                setFetch(!fectch);
+            }
         }
+        postData();
     }
+
+    useEffect(() => {
+        console.log(record);
+    }, [record])
+    
 
 
     return (
@@ -70,7 +83,19 @@ const AddRecord = () => {
         <Table record={record} />
         <div className='h-12'>
             <div>
-                <Button onClick={() => props.setOpenModal('form-elements')}>Add Record</Button>
+                <Button 
+                onClick={() => {
+                    props.setOpenModal('form-elements');
+                    dispatch(setSelectedStock(''));
+                    dispatch(setExchange(''));
+                    dispatch(setPrice(''));
+                    dispatch(setWeightage(''));
+                    dispatch(setQuantity(''));
+                    dispatch(setOrderType(''));
+                }}
+                >
+                    Add Record
+                </Button>
                 <Modal show={props.openModal === 'form-elements'}  popup onClose={() => props.setOpenModal(undefined)}>
                     <Modal.Header />
                     <Modal.Body>
@@ -88,14 +113,22 @@ const AddRecord = () => {
 
                                 <Label value="Exchange" className='col-start-1 row-start-2 text-md' />
                                 <div className=' col-start-2 row-start-2'>
-                                    <input id="bse" name="exchange" type='radio' value="BSE" onChange={(e) => {
-                                        dispatch(setExchange("BSE"));
-                                        handleExchange();
+                                    <input 
+                                        id="bse" 
+                                        name="exchange" 
+                                        type='radio' 
+                                        value="BSE"
+                                        checked={exchange === "BSE"}
+                                        onClick={() => {
+                                        handleExchange("BSE");
+                                        console.log('bse')
                                     }} />
                                     <label htmlFor='bse' className='ml-1'>BSE</label>
-                                    <input id="nse" name="exchange" type='radio' value="NSE" className='ml-1' onChange={() => {
-                                        dispatch(setExchange("NSE"));
-                                        handleExchange();
+                                    <input id="nse" name="exchange" type='radio' value="NSE" className='ml-1' 
+                                    checked={exchange === "NSE"}
+                                    onClick={() => {
+                                        handleExchange("NSE");
+                                        console.log('nse')
                                     }} />
                                     <label htmlFor='nse' className='ml-1'>NSE</label>
                                 </div>
@@ -107,9 +140,9 @@ const AddRecord = () => {
 
                                 <Label value="Order Type" className='col-start-1 row-start-4 text-md'/>
                                 <div className='col-start-2'>
-                                    <input id="buy" name="orderType" type='radio' value="Buy" onChange={() => setOrderType("Buy")} />
+                                    <input id="buy" name="orderType" type='radio' value="BUY" checked={orderType === "BUY"} onClick={() => dispatch(setOrderType("BUY"))} />
                                     <label htmlFor='buy' className='ml-1'>BUY</label>
-                                    <input id="sell" name="orderType" type='radio' value="Sell" className='ml-1' onChange={() => setOrderType("Sell")} />
+                                    <input id="sell" name="orderType" type='radio' value="SELL" className='ml-1' checked={orderType === "SELL"} onClick={() => dispatch(setOrderType("SELL"))} />
                                     <label htmlFor='sell' className='ml-1'>SELL</label>
                                 </div>
 

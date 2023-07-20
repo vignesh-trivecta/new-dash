@@ -8,10 +8,9 @@ export const getRecords = async(adminId, basketName) => {
             },
             body: JSON.stringify(
                 {
-                      "adminId": adminId,
-                      "basketName": basketName
-                    }
-                
+                    "adminId": adminId,
+                    "basketName": basketName
+                }
             )
         };
         let data;
@@ -29,12 +28,13 @@ export const getRecords = async(adminId, basketName) => {
     }
     catch(error){
         console.log(error)
+        console.log(adminId, basketName)
     }
 }
 
 
 // API call to add a new record
-export const addRecord = async({record}) => {
+export const addRecord = async(adminId, basketName,selectedStock, exchange, orderType, quantity, weightage, price, basketAmount ) => {
     try{
         const requestOptions = {
             method: 'POST',
@@ -42,16 +42,26 @@ export const addRecord = async({record}) => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                record
+                "adminId": adminId,
+                "basketName": String(basketName),
+                "instrumentName": selectedStock,
+                "exchangeUsed": exchange,
+                "orderType": "Limit",
+                "transType": orderType,
+                "quantity": quantity,
+                "weightage": Number(weightage),
+                "price": price,
+                "basketInvAmount": Number(basketAmount)           
             })
         };
+
         let data;
         const response = await fetch("http://localhost:8083/basket/temp", requestOptions);
 
         if (response.ok) {
             const responseText = await response.text();
             data = JSON.parse(responseText);
-            console.log("Response ok", data)
+            console.log(data)
             return data;
         } else {
             const errorText = await response.text();
@@ -64,23 +74,61 @@ export const addRecord = async({record}) => {
 }
 
 
-// API  call to edit a record in table
-
-
-
-// API call to delete a record from table
-export const deleteRecord = async(index) => {
+// API  call to update a record in table
+export const updateRecordAPI = async(recId, basketName, adminId, selectedStock, exchange, orderType, quantity, weightage, price, basketAmount ) => {
     try{
         const requestOptions = {
-            method: "DELETE",
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                "index": index,
+                "recId": recId,
+                "basketName": String(basketName),
+                "adminName": adminId,
+                "instrumentName": selectedStock,
+                "exchangeUsed": exchange,
+                "orderType": "Limit",
+                "transType": orderType,
+                "quantity": quantity,
+                "weightage": Number(weightage),
+                "price": price,
+                "basketInvAmount": Number(basketAmount),           
             })
+        };
+
+        let data;
+        const response = await fetch("http://localhost:8083/basket/temp/up", requestOptions);
+
+        if (response.ok) {
+            const responseText = await response.text();
+            return responseText;
+        } else {
+            const errorText = await response.text();
+            throw new Error(`Failed to fetch data: ${errorText}`);
         }
-        const response = await fetch("http://localhost:8083/", requestOptions);
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+
+
+// API call to delete a record from table
+export const deleteRecord = async(recId, basketName, adminName) => {
+    try{
+        const requestOptions = {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                  "recId": recId,
+                  "basketName": basketName,
+                  "adminName": adminName
+                  })
+        }
+        const response = await fetch("http://localhost:8083/basket/temp/del", requestOptions);
 
         if (response.ok) {
             return true;
@@ -138,7 +186,6 @@ export const getInstrumentDetails = async () => {
         
         if(response.ok){
             const jsonData = await response.json();
-            console.log(jsonData)
             return jsonData;
         }
         else {
@@ -148,9 +195,7 @@ export const getInstrumentDetails = async () => {
         
     }
     catch(error){
-        return [
-            "ASIAN PAINTS", "YES BANK", "SUZLON ENERGY", "RELIANCE POWER", "OIL AND NATURAL GAS CORP",
-            "DCB BANK", "KARUR VYSYA BANK"];
+        console.log(error);
     }
 }
 
@@ -175,7 +220,7 @@ export const sendWeightage = async(weightage, totalAmount, priceofAsset) => {
         if(response.ok) {
             const responseText = await response.text();
             data = JSON.parse(responseText);
-            console.log(data)
+            console.log(data.quantity)
             return data.quantity;
         } else {
             const errorText = await response.text();

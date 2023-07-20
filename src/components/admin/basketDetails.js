@@ -8,7 +8,7 @@ const BasketDetails = () => {
     const loggedIn = useSelector((state) => state.auth.loggedIn);
 
     return(
-        loggedIn ? (<div className="container">
+        <div className="container">
 
             {/* Customer Details table */}
             <div className="mt-4 ml-8 overflow-x-auto shadow-md sm:rounded-lg">
@@ -120,12 +120,7 @@ const BasketDetails = () => {
             </div>
             
 
-        </div>)
-        : (<div className="d-flex row container m-5">
-            <p>No authorized Access</p>
-            <p>Please <Link href='../auth/login'>login</Link></p>
-          </div>
-        )
+        </div>
     );
 };
 

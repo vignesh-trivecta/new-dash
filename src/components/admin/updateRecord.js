@@ -4,15 +4,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import SearchDropdown from '@/utils/searchDropdown';
 import Weightage from '@/utils/weightage';
 import { setInstrumentName, setExchange, setOrderType, setWeightage, setQuantity, setPrice } from '@/store/addRecordSlice';
+import { getEquityPrice, updateRecordAPI } from '@/app/api/basket/route';
 
 
-const updateRecord = ({ userId, setResponseRecord, setUserId }) => {
+const updateRecord = ({ recId, setResponseRecord, setRecId, responseRecord, updateCall }) => {
 
     const [openModal, setOpenModal] = useState(false);
     const props = { openModal, setOpenModal };
 
     const dispatch = useDispatch();
-    let instrumentName = useSelector((state) => state.add.instrumentName);
+    const selectedStock = useSelector((state) => state.add.selectedStock);
+    const basketName = useSelector((state) => state.basket.basketName);
+    const basketAmount = useSelector((state) => state.basket.basketAmount);
+    const adminId = useSelector((state) => state.user.user);
     let exchange = useSelector((state) => state.add.exchange);
     let orderType = useSelector((state) => state.add.orderType);
     let weightage = useSelector((state) => state.add.weightage);
@@ -20,19 +24,38 @@ const updateRecord = ({ userId, setResponseRecord, setUserId }) => {
     let quantity = useSelector((state) => state.add.quantity);
 
     const handleUpdate = () => {
-        console.log()
+        console.log(selectedStock, exchange, orderType, weightage, price, quantity);
+        const postDataAPI = async() => {
+            const data = await updateRecordAPI(recId, basketName, adminId, selectedStock, exchange, orderType, quantity, weightage, price, basketAmount);
+        }
+        postDataAPI();
+        updateCall();
+        setResponseRecord(!responseRecord);
+        props.setOpenModal(undefined);
+    }
+
+    const handleExchange = (exchange) => {
+        dispatch(setExchange(exchange));
+        const fetchPrice = async () => {
+            const data = await getEquityPrice(selectedStock, exchange);
+            dispatch(setPrice(data));
+            console.log(selectedStock, exchange);
+        }
+        fetchPrice();
     }
 
     useEffect(() => {
-        // Check if the 'userId' prop is present and not null or undefined
-        if (userId !== null && userId !== undefined) {
-          // Set the modal to open when 'userId' is present
+        // Check if the 'recId' prop is present and not null or undefined
+        if (recId !== null && recId !== undefined) {
+          // Set the modal to open when 'recId' is present
           props.setOpenModal("form-elements");
-          setUserId(null);
+          setRecId(null);
+        } else {
+          // Set the modal to close when 'recId' is not present
+          props.setOpenModal(undefined);
         }
-        console.log( instrumentName, orderType, weightage, price, quantity)
-
-      }, [userId]);
+      }, [recId]);
+      
       
 
 
@@ -55,9 +78,29 @@ const updateRecord = ({ userId, setResponseRecord, setUserId }) => {
 
                     <Label value="Exchange" className='col-start-1 row-start-2 text-md' />
                     <div className=' col-start-2 row-start-2'>
-                        <input id="bse" name="exchange" type='radio' value="BSE" checked={exchange === "BSE"} onChange={() => dispatch(setExchange("BSE"))} />
+                    <input 
+                        id="bse" 
+                        name="exchange" 
+                        type='radio' 
+                        value="BSE"
+                        checked={exchange === "BSE"}
+                        onClick={() => {
+                            handleExchange("BSE");
+                            console.log('bse')
+                        }} 
+                    />                                    
                         <label htmlFor='bse' className='ml-1'>BSE</label>
-                        <input id="nse" name="exchange" type='radio' value="NSE" checked={exchange === "NSE"} className='ml-1' onChange={() => dispatch(setExchange("NSE"))} />
+                        <input 
+                            id="nse" 
+                            name="exchange" 
+                            type='radio' 
+                            value="NSE" 
+                            className='ml-1' 
+                            checked={exchange === "NSE"}
+                            onClick={() => {
+                                handleExchange("NSE");
+                                console.log('nse')
+                            }} />
                         <label htmlFor='nse' className='ml-1'>NSE</label>
                     </div>
 
@@ -68,9 +111,9 @@ const updateRecord = ({ userId, setResponseRecord, setUserId }) => {
 
                     <Label value="Order Type" className='col-start-1 row-start-4 text-md'/>
                     <div className='col-start-2'>
-                        <input id="buy" name="orderType" type='radio' value="Buy" checked={orderType === "Buy"} onChange={() => dispatch(setOrderType("Buy"))} />
+                        <input id="buy" name="orderType" type='radio' value="BUY" checked={orderType === "BUY"} onClick={() => {dispatch(setOrderType("BUY"))}} />
                         <label htmlFor='buy' className='ml-1'>BUY</label>
-                        <input id="sell" name="orderType" type='radio' value="Sell" checked={orderType === "Sell"} className='ml-1' onChange={() => dispatch(setOrderType("Sell"))} />
+                        <input id="sell" name="orderType" type='radio' value="SELL" checked={orderType === "SELL"} className='ml-1' onClick={() => dispatch(setOrderType("SELL"))} />
                         <label htmlFor='sell' className='ml-1'>SELL</label>
                     </div>
 
@@ -83,7 +126,7 @@ const updateRecord = ({ userId, setResponseRecord, setUserId }) => {
                 </div>
                 <div className="flex justify-center mt-4">
                     <button type='submit' onClick={handleUpdate} className='border bg-cyan-800 rounded-md p-2 text-white hover:bg-cyan-700'>Update</button>
-                    <button type='button' onClick={(e) => { props.setOpenModal(undefined)}} className='border p-2 border-gray-400 rounded-md ml-4 hover:bg-orange-500 hover:text-white hover:border-orange-500'>Close</button>
+                    <button type='button' onClick={() => { props.setOpenModal(undefined)}} className='border p-2 border-gray-400 rounded-md ml-4 hover:bg-orange-500 hover:text-white hover:border-orange-500'>Close</button>
                 </div>
             </Modal.Body>
         </Modal>   

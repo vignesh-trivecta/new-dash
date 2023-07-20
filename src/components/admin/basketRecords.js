@@ -1,14 +1,18 @@
+import { setSelectedStock } from '@/store/addRecordSlice';
 import Link from 'next/link'
 import React from 'react'
+import { useDispatch } from 'react-redux'
 
 const BasketRecords = ({ record, index, deleteRecord, updateRecord }) => {
+
+  const dispatch = useDispatch();
   return (
         <tr key={index} className="bg-white border dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
               <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                <div className='text-sm text-gray-700'>{record.recId}</div>
+                <div className='text-sm text-gray-700'>{index+1}</div>
               </th>
               <td className="px-6 py-4">
-                <div className='text-sm text-gray-700'>{record.isinNo}</div>
+                <div className='text-sm text-gray-700'>{record.instrumentName}</div>
               </td>
               <td className="px-6 py-4">
                 <div className='text-sm text-gray-700'>{record.exchangeUsed}</div>
@@ -29,7 +33,8 @@ const BasketRecords = ({ record, index, deleteRecord, updateRecord }) => {
                 <Link
                 href="#"
                 onClick={(e) => {
-                  updateRecord(e, index, record.instrumentName, record.exchange, record.orderType, record.weightage, record.price, record.quantity);
+                  updateRecord(e, record.recId, record.instrumentName, record.exchangeUsed, record.transType, record.weightValue, record.priceValue, record.quantityValue);
+                  dispatch(setSelectedStock(record.instrumentName));
                 }}
                 className='text-indigo-600 hover:text-indigo-800 hover:cursor-pointer px-4'
                 >
@@ -37,7 +42,7 @@ const BasketRecords = ({ record, index, deleteRecord, updateRecord }) => {
                 </Link>
                 <Link
                 href="#"
-                onClick={(e) => deleteRecord(e, index)}
+                onClick={(e) => deleteRecord(e, index, record.recId)}
                 className='text-indigo-600 hover:text-indigo-800 hover:cursor-pointer'
                 >
                   Delete

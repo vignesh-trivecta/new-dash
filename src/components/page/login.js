@@ -11,8 +11,9 @@ import * as Yup from "yup";
 import { setLoggedIn } from "@/store/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
-import { setPassword, setUser } from "@/store/userSlice";
+import { setUser, setEmail, setPhone } from "@/store/userSlice";
 import { Label, TextInput } from 'flowbite-react';
+import { loginAPI } from "@/app/api/login";
 
 const LoginAuth = () => {
 
@@ -67,61 +68,39 @@ const LoginAuth = () => {
 function encryptedCredentials(user, password, SECRET_KEY) {
   var key = CryptoJS.enc.Utf8.parse(SECRET_KEY);
   var iv = CryptoJS.enc.Utf8.parse('testVarTreeFlowe');
-  console.log("key:" ,key.toString(), "\n iv:",iv.toString());
   let encryptedUser = CryptoJS.AES.encrypt(user, key, { iv: iv }).toString();
   let encryptedPassword = CryptoJS.AES.encrypt(password, key, { iv: iv }).toString();
   return {encryptedUser, encryptedPassword};
 }
 
   // onsubmit function 
-  const submitLogin = (values) => {
+  const submitLogin = async (values) => {
     
     // destructuring values object
     const { username, password, captcha } = values;
-    dispatch(setLoggedIn(true));
+    // dispatch(setLoggedIn(true));
     dispatch(setUser(username));
-    router.push('/admin/dashboard');
 
     // checking if login credentials are correct
-    if(username === 'admin12' && password === 'admin12' && captcha === captchaValue){
+    if(username != null && password !== null && captcha === captchaValue){
 
       // signing the username, password with secret key
       // using jwt to create a authentication token
       
       const { encryptedUser, encryptedPassword } = encryptedCredentials(username, password, 'WepyWestTestEastWepyWestTestEast');
       const token = jwt.sign({encryptedUser, encryptedPassword}, 'admin12');
-
-
       console.log(token);
+
       // posting the authorized token to backend,
       // based on the received respone 200 or 404 
       // redirecting user to next page
-      fetch("http://localhost:8082/admin/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-          },
-          // body: token,
-      })
-      .then(response => {
-          if (response.status === 200) {
-            // authentication successful
-            // redirect user to dashboard or home page
-    
-            dispatch(setLoggedIn(true));
-            router.push('/admin/dashboard');
-          } 
-          else {
-            // authentication failed
-            // display error message to user
-    
-            alert("Invalid credentials");
-          }
-      })
-      .catch(error => {
-          console.error('There was a problem with the fetch operation:', error);
-      });
+      const login =  await loginAPI(token);
+      console.log(login.email)
+      if(login.statusCode == 200){
+        dispatch(setEmail(login.email));
+        dispatch(setPhone(login.phone));
+        router.push('/admin/dashboard');
+      }
     }
   };
 
@@ -287,7 +266,7 @@ function encryptedCredentials(user, password, SECRET_KEY) {
 
 
                             <div className="flex justify-center mt-4">
-                                <button className="px-6 py-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50">
+                                <button type="submit" className="px-6 py-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50">
                                     Log In
                                 </button>
                             </div>

@@ -15,9 +15,12 @@ const Weightage = () => {
 
     const [inputValue, setInputValue] = useState('');
 
+
     // //function to get the quantity of stocks based on weightage
     const quantityAPI = async () => {
+        console.log('api call enter')
         const quantity = await sendWeightage(weightage, basketAmount, price);
+        console.log("setting price")
         dispatch(setQuantity(quantity));
     }
 
@@ -25,7 +28,6 @@ const Weightage = () => {
     const handleChange = (e) => {
         e.preventDefault();
         const newValue = e.target.value;
-        setInputValue(e.target.value);
         dispatch(setWeightage(newValue));
         quantityAPI();
     };
@@ -33,7 +35,7 @@ const Weightage = () => {
     return(
         <div className=''>
             <input type='number' 
-                value={inputValue}
+                value={weightage}
                 onChange={handleChange} 
                 className='w-full border border-gray-200 rounded-md' 
                 autoFocus

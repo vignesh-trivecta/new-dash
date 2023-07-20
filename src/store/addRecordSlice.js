@@ -2,8 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // initial state values
 const initialState = {
-    selectedStock: '',
-    instrumentName: "",
+    recId: "",
+    selectedStock: "",
     exchange: "",
     orderType: "",
     weightage: "",
@@ -16,6 +16,9 @@ const addRecordSlice = createSlice({
   name: 'add',
   initialState,
   reducers: {
+    setRecId: (state, action) => {
+      state.recId = action.payload;
+    },
     setSelectedStock: (state, action) => {
       state.selectedStock = action.payload;
     },
@@ -40,6 +43,6 @@ const addRecordSlice = createSlice({
   },
 });
 
-export const { setSelectedStock, setInstrumentName, setExchange, setOrderType, setWeightage, setQuantity, setPrice } = addRecordSlice.actions;
+export const { setRecId, setSelectedStock, setInstrumentName, setExchange, setOrderType, setWeightage, setQuantity, setPrice } = addRecordSlice.actions;
 
 export default addRecordSlice.reducer;

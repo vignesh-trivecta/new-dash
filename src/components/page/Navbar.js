@@ -1,7 +1,7 @@
 import { Navbar, Dropdown, Avatar } from "flowbite-react";
 import logo from "@/../../public/logo1.png";
 import Image from "next/image";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setLoggedIn } from "@/store/authSlice";
 import { useRouter } from "next/navigation";
 
@@ -9,6 +9,9 @@ const DashNavbar = function () {
 
     const dispatch = useDispatch();
     const router = useRouter();
+    const username = useSelector((state) => state.user.user);
+    const email = useSelector((state) => state.user.email);
+
   return (
     <Navbar fluid className="border-b-2">
       <div className="w-full p-3 lg:px-5 lg:pl-3">
@@ -26,10 +29,10 @@ const DashNavbar = function () {
         >
           <Dropdown.Header>
             <span className="block text-sm text-center">
-              Bonnie Green
+              {username}
             </span>
             <span className="block truncate text-sm font-medium">
-            bonnie@wealthspring.com
+            {email}
             </span>
           </Dropdown.Header>
           <Dropdown.Item className=" flex justify-center hover:bg-white">

@@ -43,25 +43,25 @@ const CreateBasket = () => {
       </div>
       <AddRecord />
       <div>
-        <Modal show={props.openModal === 'form-elements'} size={'sm'} popup onClose={() => props.setOpenModal(undefined)}>
+        <Modal show={props.openModal === 'form-elements'} size={'lg'} popup onClose={() => props.setOpenModal(undefined)}>
             <Modal.Header />
-            <Modal.Body>
+            <Modal.Body className='overflow-hidden'>
               <h4 className="text-xl font-medium text-gray-900 dark:text-white mb-4">Create New Basket</h4>
               <hr />
               <div className='grid grid-rows-2 grid-cols-2 gap-4 mt-4'>
                 
-                <div className='flex items-center justify-end'>
+                <div className='flex items-center justify-start'>
                   <Label htmlFor='basketName' value="Basket Name" className='' /> 
                 </div>
                 <BasketName autoFocus={true} />
 
-                <div className='flex items-center justify-end'>
+                <div className='flex items-center justify-start'>
                   <Label htmlFor='basketAmount' value="Basket Amount" className='' /> 
                 </div>                
                 <BasketAmount />
               </div>
               <div className='flex justify-center mt-4'>
-                <button type='submit' onClick={() => props.setOpenModal(undefined)} className='bg-cyan-700 text-white p-2 rounded-md hover:bg-cyan-800'>Submit</button>
+                <button type='submit' onClick={() => {props.setOpenModal(undefined); }} className='bg-cyan-700 text-white p-2 rounded-md hover:bg-cyan-800'>Submit</button>
               </div>
             </Modal.Body>
         </Modal>

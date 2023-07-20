@@ -4,17 +4,19 @@ import React, { useEffect, useState } from 'react';
 import { getRecords, deleteRecord } from '@/app/api/basket/route';
 import BasketRecords from '@/components/admin/basketRecords';
 import UpdateRecord from './updateRecord';
-import { setInstrumentName, setExchange, setOrderType, setWeightage, setQuantity, setPrice } from '@/store/addRecordSlice';
+import { setInstrumentName, setExchange, setOrderType, setWeightage, setQuantity, setPrice, setRecId } from '@/store/addRecordSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
 const Table = ({record}) => {
 
   let [records, setRecords] = useState([]);
-  let [userId, setUserId] = useState(null);
-  let [responseRecord, setResponseRecord] = useState([]);
+  // let [userId, setUserId] = useState(null);
+  let [responseRecord, setResponseRecord] = useState(false);
 
   const dispatch = useDispatch();
   const basketName = useSelector((state) => state.basket.basketName);
+  const adminId = useSelector((state) => state.user.user);
+  const recId = useSelector((state) => state.add.recId);
   // const instrumentName = useSelector((state) => state.add.instrumentName);
   // const exchange = useSelector((state) => state.add.exchange);
   // const orderType = useSelector((state) => state.add.orderType);
@@ -22,14 +24,18 @@ const Table = ({record}) => {
   // const price = useSelector((state) => state.add.price);
   // const quantity = useSelector((state) => state.add.quantity);
 
-
   useEffect(() => {
     const fetchData = async () => {
-      const response = await getRecords('admin12', 'NewBasket719');
+      const response = await getRecords(adminId, basketName);
+      console.log(response);
       setRecords(response);
     }
     fetchData();
-  }, [record, responseRecord]);
+  }, [record, responseRecord, basketName, recId]);
+
+  const updateCall = () => {
+    setResponseRecord(!responseRecord);
+  }
 
   const updateRecordHandler = (e, index, instrumentName, exchange, orderType, weightage, price, quantity) => {
     e.preventDefault();
@@ -39,21 +45,14 @@ const Table = ({record}) => {
     dispatch(setWeightage(weightage));
     dispatch(setPrice(price));
     dispatch(setQuantity(quantity));
-    setUserId(index);
+    dispatch(setRecId(index));
     console.log(index, instrumentName, exchange, orderType, weightage, price, quantity)
   }
 
-  const deleteRecordHandler = async(e, index) => {
+  const deleteRecordHandler = async(e, index, recordId) => {
     e.preventDefault();
-    const deletionSuccessful = await deleteRecord(index);
-    if(deletionSuccessful && records){
-      setRecords((prevElement) => {
-        return prevElement.filter((record) => record.index != index)
-      })
-    }
-    else{
-      console.error("Record deletion failed!");
-    }
+    const deletionSuccessful = await deleteRecord(recordId, basketName, adminId);
+    setResponseRecord(!responseRecord);
   }
 
   return (
@@ -74,22 +73,24 @@ const Table = ({record}) => {
           </thead>
           { 
             <tbody className='bg-white'>
-              {records.map((record, index) => (
+              {records && records.length > 0 ? (records.map((record, index) => (
                 <BasketRecords 
                   record={record} 
                   index={index} 
                   deleteRecord={deleteRecordHandler} 
                   updateRecord={updateRecordHandler} 
                 />
-                ))}
+                ))) : <p>No table data</p>}
             </tbody>
           }
         </table>
       </div>
       <UpdateRecord 
-        userId={userId}  
+        recId={recId}  
         setResponseRecord={setResponseRecord} 
-        setUserId={setUserId} 
+        setRecId={setRecId} 
+        responseRecord={responseRecord}
+        updateCall={updateCall}
       />   
     </div>
   )
