@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Logo from "../../public/logo1.png"
-import LoginAuth from "@/components/page/login";
+import LoginAuth from "@/components/page/Login";
 
 export const metadata = {
   title: 'Wealth Spring | Login',

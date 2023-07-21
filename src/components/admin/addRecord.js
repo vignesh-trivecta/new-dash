@@ -10,7 +10,7 @@ import Table from './Table';
 import { addRecord, getEquityPrice } from '@/app/api/basket/route';
 import { setExchange, setOrderType, setPrice, setQuantity, setSelectedStock, setWeightage } from '@/store/addRecordSlice';
 
-const AddRecord = () => {
+const AddRecord = ({ instrumentName, handleFetch, setHandleFetch }) => {
 
     const [openModal, setOpenModal] = useState(false);
     const props = { openModal, setOpenModal };
@@ -26,15 +26,15 @@ const AddRecord = () => {
     const quantity = useSelector((state) => state.add.quantity);
     const adminId = useSelector((state) => state.user.user);
 
-    const [fectch, setFetch] = useState(false);
+    // const [fectch, setFetch] = useState(false);
 
-    const [record, setRecord] = useState({
-        instrumentName: "",
-        exchange: "",
-        weightage: "",
-        orderType: "",
-        quantity: "",
-    });
+    // const [record, setRecord] = useState({
+    //     instrumentName: "",
+    //     exchange: "",
+    //     weightage: "",
+    //     orderType: "",
+    //     quantity: "",
+    // });
 
     const handleExchange = (exchange) => {
         dispatch(setExchange(exchange));
@@ -48,41 +48,35 @@ const AddRecord = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setRecord({
-            "adminId": adminId,
-            "basketName": basketName,
-            "instrumentName": selectedStock,
-            "exchangeUsed": exchange,
-            "orderType": "Limit",
-            "transType": orderType,
-            "quantity": quantity,
-            "weightage": Number(weightage),
-            "price": price,
-            "basketInvAmount": Number(basketAmount)           
-        })
+        // setRecord({
+        //     "adminId": adminId,
+        //     "basketName": basketName,
+        //     "instrumentName": selectedStock,
+        //     "exchangeUsed": exchange,
+        //     "orderType": "Limit",
+        //     "transType": orderType,
+        //     "quantity": quantity,
+        //     "weightage": Number(weightage),
+        //     "price": price,
+        //     "basketInvAmount": Number(basketAmount)           
+        // })
         // need to make the api call here
         // by removing setRecord or can use directly
         // the response received needs to be mapped to Table
         const postData = async() => {
             const data = await addRecord(adminId, basketName,selectedStock, exchange, orderType, quantity, weightage, price, basketAmount);
             if(data.status == 200){
-                setFetch(!fectch);
+                setHandleFetch(!handleFetch);
+                props.setOpenModal(undefined);
             }
         }
         postData();
     }
-
-    useEffect(() => {
-        console.log(record);
-    }, [record])
     
-
 
     return (
     <div className='container mx-atuo my-8'>
-        <Table record={record} />
-        <div className='h-12'>
-            <div>
+
                 <Button 
                 onClick={() => {
                     props.setOpenModal('form-elements');
@@ -96,6 +90,8 @@ const AddRecord = () => {
                 >
                     Add Record
                 </Button>
+
+                {/* Modal for entering new record details to add */}
                 <Modal show={props.openModal === 'form-elements'}  popup onClose={() => props.setOpenModal(undefined)}>
                     <Modal.Header />
                     <Modal.Body>
@@ -155,13 +151,21 @@ const AddRecord = () => {
                         </div>
                         <div className="flex justify-center mt-4">
                             <button type='submit' onClick={handleSubmit} className='border bg-cyan-800 rounded-md p-2 text-white hover:bg-cyan-700'>Submit</button>
-                            <button type='button' onClick={() => props.setOpenModal(undefined)} className='border p-2 border-gray-400 rounded-md ml-4 hover:bg-orange-500 hover:text-white hover:border-orange-500'>Close</button>
+                            <button type='button'                 
+                                onClick={() => {
+                                    props.setOpenModal(undefined);
+                                    dispatch(setSelectedStock(''));
+                                    dispatch(setExchange(''));
+                                    dispatch(setPrice(''));
+                                    dispatch(setWeightage(''));
+                                    dispatch(setQuantity(''));
+                                    dispatch(setOrderType(''));
+                                }}
+                                className='border p-2 border-gray-400 rounded-md ml-4 hover:bg-orange-500 hover:text-white hover:border-orange-500'>Close</button>
                         </div>
                     </Modal.Body>
                 </Modal>
             </div>
-        </div>
-    </div>
     )
 }
 

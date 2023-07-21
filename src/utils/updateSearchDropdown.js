@@ -7,12 +7,14 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedStock } from "@/store/addRecordSlice";
 
-export default function SearchDropdown({ id }) {
+export default function UpdateSearchDropdown ({ instrumentName, id }) {
   const [stocksList, setStocksList] = useState([]);
   const [query, setQuery] = useState("");
 
   const dispatch = useDispatch();
   const selectedStock = useSelector((state) => state.add.selectedStock);
+
+  const [localStock, setLocalStock] = useState(instrumentName);
 
   const filteredStocksList =
     query === ""
@@ -36,12 +38,13 @@ export default function SearchDropdown({ id }) {
   const handleChange = (value) => {
     console.log(value);
     dispatch(setSelectedStock(value));
+    setLocalStock(value);
   }
   
 
   return (
     <div className="">
-      <Combobox value={selectedStock} onChange={(newValue) => {handleChange(newValue)}}>
+      <Combobox value={localStock} onChange={(newValue) => {handleChange(newValue)}}>
         <div className="relative mt-1">
           <div className="relative w-full cursor-default  rounded-lg bg-white text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
             <Combobox.Input

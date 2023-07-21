@@ -6,7 +6,7 @@ import { setBasketAmount } from '@/store/basketSlice';
 import { setQuantity, setWeightage } from '@/store/addRecordSlice';
 
 
-const Weightage = () => {
+const Weightage = ({ lweightage }) => {
     
     const weightage = useSelector((state) => state.add.weightage);
     const price = useSelector((state) => state.add.price);
@@ -35,7 +35,7 @@ const Weightage = () => {
     return(
         <div className=''>
             <input type='number' 
-                value={weightage}
+                value={lweightage}
                 onChange={handleChange} 
                 className='w-full border border-gray-200 rounded-md' 
                 autoFocus

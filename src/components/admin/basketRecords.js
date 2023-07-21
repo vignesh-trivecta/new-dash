@@ -2,8 +2,9 @@ import { setSelectedStock } from '@/store/addRecordSlice';
 import Link from 'next/link'
 import React from 'react'
 import { useDispatch } from 'react-redux'
+import UpdateRecord from './updateRecord';
 
-const BasketRecords = ({ record, index, deleteRecord, updateRecord }) => {
+const BasketRecords = ({ record, index, deleteRecord, handleFetch, setHandleFetch }) => {
 
   const dispatch = useDispatch();
   return (
@@ -30,7 +31,18 @@ const BasketRecords = ({ record, index, deleteRecord, updateRecord }) => {
                 <div className='text-sm text-gray-700'>{record.quantityValue}</div>
               </td>
               <td className="px-6 py-4">
-                <Link
+                < UpdateRecord 
+                recId={record.recId} 
+                instrumentName={record.instrumentName} 
+                exchange={record.exchangeUsed}
+                orderType={record.transType}
+                weightage={record.weightValue}
+                price={record.priceValue}
+                quantity={record.quantityValue}
+                handleFetch={handleFetch} 
+                setHandleFetch={setHandleFetch}
+                />
+                {/* <Link
                 href="#"
                 onClick={(e) => {
                   updateRecord(e, record.recId, record.instrumentName, record.exchangeUsed, record.transType, record.weightValue, record.priceValue, record.quantityValue);
@@ -39,7 +51,7 @@ const BasketRecords = ({ record, index, deleteRecord, updateRecord }) => {
                 className='text-indigo-600 hover:text-indigo-800 hover:cursor-pointer px-4'
                 >
                   Update
-                </Link>
+                </Link> */}
                 <Link
                 href="#"
                 onClick={(e) => deleteRecord(e, index, record.recId)}

@@ -8,10 +8,9 @@ import CryptoJS from "crypto-js";
 import jwt  from "jsonwebtoken";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { setLoggedIn } from "@/store/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
-import { setUser, setEmail, setPhone } from "@/store/userSlice";
+import { setUsername, setEmail, setPhone, setLoggedIn } from "@/store/userSlice";
 import { Label, TextInput } from 'flowbite-react';
 import { loginAPI } from "@/app/api/login";
 
@@ -79,7 +78,7 @@ function encryptedCredentials(user, password, SECRET_KEY) {
     // destructuring values object
     const { username, password, captcha } = values;
     // dispatch(setLoggedIn(true));
-    dispatch(setUser(username));
+    dispatch(setUsername(username));
 
     // checking if login credentials are correct
     if(username != null && password !== null && captcha === captchaValue){
