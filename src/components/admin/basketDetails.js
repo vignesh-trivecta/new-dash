@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { segregate } from "@/utils/priceSegregator";
 const BasketDetails = () => {
 
-    const loggedIn = useSelector((state) => state.auth.loggedIn);
+    const loggedIn = useSelector((state) => state.user.loggedIn);
 
     return(
         <div className="container">

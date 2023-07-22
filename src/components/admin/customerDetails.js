@@ -7,7 +7,7 @@ import { getCustomers } from "@/app/api/basket/route";
 
 const CustomerDetails = () => {
 
-    const loggedIn = useSelector((state) => state.auth.loggedIn);
+    const loggedIn = useSelector((state) => state.user.loggedIn);
     const [ customers, setCustomers ] = useState([]);
     useEffect(() => {
         const fetchData = async () => {

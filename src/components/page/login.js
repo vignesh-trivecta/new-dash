@@ -103,6 +103,10 @@ function encryptedCredentials(user, password, SECRET_KEY) {
     }
   };
 
+  dispatch(setEmail('admin12'));
+  dispatch(setPhone('admin12'));
+  router.push('/admin/dashboard');
+
   // Yup validation schema structure
   const validationSchema = Yup.object().shape({
     username: Yup.string()

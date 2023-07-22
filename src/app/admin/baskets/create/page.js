@@ -9,6 +9,7 @@ import BasketName from '@/utils/basketName';
 import BasketAmount from '@/utils/basketAmount';
 import { getRecords } from '@/app/api/basket/route';
 import BasketRecords from '@/components/admin/basketRecords';
+import SubmitBasket from '@/components/admin/submitBasket';
 
 const CreateBasket = () => {
 
@@ -95,12 +96,21 @@ const CreateBasket = () => {
         </div>
       </div>
 
-      {/* Add Record Component */}
-      <AddRecord handleFetch={handleFetch} setHandleFetch={setHandleFetch} />
+
+      
+      <div className='flex justify-center items-center mt-4'>
+
+        {/* Add Record Component */}
+        <AddRecord handleFetch={handleFetch} setHandleFetch={setHandleFetch} />
+
+        {/* Submit Basket Button */}
+        <SubmitBasket />
+
+      </div>
 
       {/* Create Basket Modal */}
       <div>
-        <Modal show={props.openModal === 'form-elements'} size={'lg'} popup onClose={() => props.setOpenModal(undefined)}>
+        <Modal show={props.openModal === 'form-elements'} popup onClose={() => props.setOpenModal(undefined)}>
             <Modal.Header />
             <Modal.Body className='overflow-hidden'>
               <h4 className="text-xl font-medium text-gray-900 dark:text-white mb-4">Create New Basket</h4>
@@ -118,7 +128,7 @@ const CreateBasket = () => {
                 <BasketAmount />
               </div>
               <div className='flex justify-center mt-4'>
-                <button type='submit' onClick={() => {props.setOpenModal(undefined); setHandleFetch(!handleFetch) }} className='bg-cyan-700 text-white p-2 rounded-md hover:bg-cyan-800'>Submit</button>
+                <button type='submit' onClick={() => {props.setOpenModal(undefined); setHandleFetch(!handleFetch) }} className='bg-cyan-700 text-white p-2 rounded-md hover:bg-cyan-800'>Create</button>
               </div>
             </Modal.Body>
         </Modal>

@@ -8,13 +8,13 @@ export const getRecords = async(adminId, basketName) => {
             },
             body: JSON.stringify(
                 {
-                    "adminId": adminId,
+                    "adminId": 'admin12',
                     "basketName": basketName
                 }
             )
         };
         let data;
-        const response = await fetch("http://localhost:8083/basket/temp/list", requestOptions);
+        const response = await fetch("https://19bc-49-204-114-120.ngrok.io/basket/temp/list", requestOptions);
 
         if (response.ok) {
             const responseText = await response.text();
@@ -56,7 +56,7 @@ export const addRecord = async(adminId, basketName,selectedStock, exchange, orde
         };
 
         let data;
-        const response = await fetch("http://localhost:8083/basket/temp", requestOptions);
+        const response = await fetch("https://19bc-49-204-114-120.ngrok.io/basket/temp", requestOptions);
 
         if (response.ok) {
             const responseText = await response.text();
@@ -98,7 +98,7 @@ export const updateRecordAPI = async(recId, basketName, adminId, selectedStock, 
         };
 
         let data;
-        const response = await fetch("http://localhost:8083/basket/temp/up", requestOptions);
+        const response = await fetch("https://19bc-49-204-114-120.ngrok.io/basket/temp/up", requestOptions);
 
         if (response.ok) {
             const responseText = await response.text();
@@ -128,7 +128,7 @@ export const deleteRecord = async(recId, basketName, adminName) => {
                   "adminName": adminName
                   })
         }
-        const response = await fetch("http://localhost:8083/basket/temp/del", requestOptions);
+        const response = await fetch("https://19bc-49-204-114-120.ngrok.io/basket/temp/del", requestOptions);
 
         if (response.ok) {
             return true;
@@ -161,7 +161,7 @@ export const getEquityPrice = async (instrumentName, exchange) => {
         };
 
         let data;
-        const response = await fetch("http://localhost:8083/equity-price", requestOptions);
+        const response = await fetch("https://19bc-49-204-114-120.ngrok.io/equity-price", requestOptions);
         
         if (response.ok) {
             const responseText = await response.text();
@@ -182,7 +182,7 @@ export const getEquityPrice = async (instrumentName, exchange) => {
 // API call to get the stocks details
 export const getInstrumentDetails = async () => {
     try{
-        const response = await fetch("http://localhost:8083/instruments")
+        const response = await fetch("https://19bc-49-204-114-120.ngrok.io/instruments")
         
         if(response.ok){
             const jsonData = await response.json();
@@ -195,7 +195,7 @@ export const getInstrumentDetails = async () => {
         
     }
     catch(error){
-        console.log(error);
+        console.log(error)
     }
 }
 
@@ -215,7 +215,7 @@ export const sendWeightage = async(weightage, totalAmount, priceofAsset) => {
         }
 
         let data;
-        const response = await fetch("http://localhost:8083/quantity-calc", requestOptions);
+        const response = await fetch("https://19bc-49-204-114-120.ngrok.io/quantity-calc", requestOptions);
 
         if(response.ok) {
             const responseText = await response.text();

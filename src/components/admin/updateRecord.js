@@ -5,14 +5,14 @@ import Weightage from '@/utils/weightage';
 import { getEquityPrice, updateRecordAPI } from '@/app/api/basket/route';
 import UpdateSearchDropdown from '@/utils/updateSearchDropdown';
 
-const UpdateRecord = ({ recId, instrumentName, exchange, orderType, weightage, price, quantity, handleFetch, setHandleFetch }) => {
+const UpdateRecord = ({ recId, instrumentName, exchange, transType, weightage, price, quantity, handleFetch, setHandleFetch }) => {
 
     const [openModal, setOpenModal] = useState(false);
     const props = { openModal, setOpenModal };
 
     let [localPrice, setLocalPrice] = useState(price);
     let [localExchange, setLocalExchange] = useState(exchange);
-    let [localOrderType, setLocalOrderType] = useState(orderType);
+    let [localTransType, setLocalTransType] = useState(transType);
 
     const dispatch = useDispatch();
     const basketName = useSelector((state) => state.basket.basketName);
@@ -21,15 +21,15 @@ const UpdateRecord = ({ recId, instrumentName, exchange, orderType, weightage, p
 
     const selectedStock = useSelector((state) => state.add.selectedStock);
     // let exchange = useSelector((state) => state.add.exchange);
-    // let orderType = useSelector((state) => state.add.orderType);
+    // let transType = useSelector((state) => state.add.transType);
     // let weightage = useSelector((state) => state.add.weightage);
     // let price = useSelector((state) => state.add.price);
     // let quantity = useSelector((state) => state.add.quantity);
 
     const handleUpdate = () => {
-        console.log(selectedStock, localExchange, localOrderType, weightage, localPrice, quantity);
+        console.log(selectedStock, localExchange, localTransType, weightage, localPrice, quantity);
         const postDataAPI = async() => {
-            const data = await updateRecordAPI(recId, basketName, adminId, selectedStock, localExchange, localOrderType, quantity, weightage, localPrice, basketAmount);
+            const data = await updateRecordAPI(recId, basketName, adminId, selectedStock, localExchange, localTransType, quantity, weightage, localPrice, basketAmount);
         }
         postDataAPI();
         setHandleFetch(!handleFetch);
@@ -46,8 +46,8 @@ const UpdateRecord = ({ recId, instrumentName, exchange, orderType, weightage, p
         fetchPrice();
     }
 
-    const handleOrderType = (orderType) => {
-        setLocalOrderType(orderType);
+    const handleTransType = (transType) => {
+        setLocalTransType(transType);
     }
 
 
@@ -102,25 +102,25 @@ const UpdateRecord = ({ recId, instrumentName, exchange, orderType, weightage, p
                         <Weightage lweightage={weightage} />
                     </div>
 
-                    <Label value="Order Type" className='col-start-1 row-start-4 text-md'/>
+                    <Label value="Transaction Type" className='col-start-1 row-start-4 text-md'/>
                     <div className='col-start-2'>
                         <input 
                             id="buy" 
-                            name="orderType" 
+                            name="transType" 
                             type='radio' 
                             value="BUY" 
-                            checked={localOrderType === "BUY"} 
-                            onClick={() => handleOrderType("BUY")} 
+                            checked={localTransType === "BUY"} 
+                            onClick={() => handleTransType("BUY")} 
                         />
                         <label htmlFor='buy' className='ml-1'>BUY</label>
                         <input 
                             id="sell" 
-                            name="orderType" 
+                            name="transType" 
                             type='radio' 
                             value="SELL" 
-                            checked={localOrderType === "SELL"} 
+                            checked={localTransType === "SELL"} 
                             className='ml-1' 
-                            onClick={() => handleOrderType("SELL")}  
+                            onClick={() => handleTransType("SELL")}  
                         />
                         <label htmlFor='sell' className='ml-1'>SELL</label>
                     </div>
@@ -140,8 +140,8 @@ const UpdateRecord = ({ recId, instrumentName, exchange, orderType, weightage, p
 
                 </div>
                 <div className="flex justify-center mt-4">
-                    <button type='submit' onClick={handleUpdate} className='border bg-cyan-800 rounded-md p-2 text-white hover:bg-cyan-700'>Update</button>
-                    <button type='button' onClick={() => { props.setOpenModal(undefined)}} className='border p-2 border-gray-400 rounded-md ml-4 hover:bg-orange-500 hover:text-white hover:border-orange-500'>Close</button>
+                    <Button type='submit'  onClick={handleUpdate} className='border bg-cyan-800 rounded-md p-2 text-white hover:bg-cyan-700'>Update</Button>
+                    <Button color="gray" onClick={() => { props.setOpenModal(undefined)}} className='border p-2 border-gray-400 rounded-md ml-4 hover:bg-orange-500 hover:text-white hover:border-orange-500'>Close</Button>
                 </div>
             </Modal.Body>
         </Modal>   

@@ -5,6 +5,7 @@ const initialState = {
     recId: "",
     selectedStock: "",
     exchange: "",
+    transType: "",
     orderType: "",
     weightage: "",
     quantity: "",
@@ -28,6 +29,9 @@ const addRecordSlice = createSlice({
     setExchange: (state, action) => {
       state.exchange = action.payload;
     },
+    setTransType: (state, action) => {
+      state.transType = action.payload;
+    },
     setOrderType: (state, action) => {
       state.orderType = action.payload;
     },
@@ -43,6 +47,6 @@ const addRecordSlice = createSlice({
   },
 });
 
-export const { setRecId, setSelectedStock, setInstrumentName, setExchange, setOrderType, setWeightage, setQuantity, setPrice } = addRecordSlice.actions;
+export const { setRecId, setSelectedStock, setInstrumentName, setExchange, setTransType, setOrderType, setWeightage, setQuantity, setPrice } = addRecordSlice.actions;
 
 export default addRecordSlice.reducer;
