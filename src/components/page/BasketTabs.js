@@ -13,7 +13,7 @@ export default function BasketTabs() {
   return (
     <>
       <Tabs.Group
-        aria-label="Default tabs"
+        ariaLabel="Default tabs"
         style="default"
         ref={props.tabsRef}
         onActiveTabChange={(tab) => props.setActiveTab(tab)}

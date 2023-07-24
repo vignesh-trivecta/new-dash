@@ -77,8 +77,6 @@ function encryptedCredentials(user, password, SECRET_KEY) {
     
     // destructuring values object
     const { username, password, captcha } = values;
-    // dispatch(setLoggedIn(true));
-    dispatch(setUsername(username));
 
     // checking if login credentials are correct
     if(username != null && password !== null && captcha === captchaValue){
@@ -96,6 +94,7 @@ function encryptedCredentials(user, password, SECRET_KEY) {
       const login =  await loginAPI(token);
       console.log(login.email)
       if(login.statusCode == 200){
+        dispatch(setUsername(username));
         dispatch(setEmail(login.email));
         dispatch(setPhone(login.phone));
         router.push('/admin/dashboard');
@@ -103,9 +102,9 @@ function encryptedCredentials(user, password, SECRET_KEY) {
     }
   };
 
-  dispatch(setEmail('admin12'));
-  dispatch(setPhone('admin12'));
-  router.push('/admin/dashboard');
+  // dispatch(setEmail('admin12'));
+  // dispatch(setPhone('admin12'));
+  // router.push('/admin/dashboard');
 
   // Yup validation schema structure
   const validationSchema = Yup.object().shape({
@@ -162,7 +161,7 @@ function encryptedCredentials(user, password, SECRET_KEY) {
                                 onBlur={handleBlur}
                                 value={values.username}
                                 placeholder="Username" 
-                                aria-label="username" />
+                                ariaLabel="username" />
                             </div>
                             {/* If validation is not passed show errors */}
                             <p className="error text-red-500" style={{fontSize: '12px'}}>
@@ -182,7 +181,7 @@ function encryptedCredentials(user, password, SECRET_KEY) {
                                     onBlur={handleBlur}
                                     value={values.password} 
                                     placeholder="Password" 
-                                    aria-label="password"
+                                    ariaLabel="password"
                                     />
                                     <button 
                                     className="absolute inset-y-0 right-0 flex items-center px-4 font-bold text-white bg-gray-300 rounded-r-lg hover:bg-gray-400 focus:bg-gray-500"
@@ -210,7 +209,7 @@ function encryptedCredentials(user, password, SECRET_KEY) {
                                     onBlur={handleBlur}
                                     value={values.password} 
                                     placeholder="Password" 
-                                    aria-label="password"
+                                    ariaLabel="password"
                                     />
                                     <button 
                                     className="absolute inset-y-0 right-0 flex items-center px-4 font-bold text-white bg-gray-300 rounded-r-lg hover:bg-gray-400 focus:bg-gray-500"
@@ -239,7 +238,7 @@ function encryptedCredentials(user, password, SECRET_KEY) {
                                     className="block w-full text-gray-700 bg-gray-100 border-gray-300 rounded-lg dark:bg-gray-800 dark:border-gray-600" 
                                     type="text" 
                                     value={captchaValue}
-                                    aria-label="Captcha" 
+                                    ariaLabel="Captcha" 
                                     />
                                     <button 
                                     className="absolute inset-y-0 right-0 flex items-center px-4 font-bold text-white bg-gray-300 rounded-r-lg hover:bg-gray-400 focus:bg-gray-300"

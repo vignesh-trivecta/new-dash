@@ -10,16 +10,21 @@ import BasketAmount from '@/utils/basketAmount';
 import { getRecords } from '@/app/api/basket/route';
 import BasketRecords from '@/components/admin/basketRecords';
 import SubmitBasket from '@/components/admin/submitBasket';
+import { segregate } from '@/utils/priceSegregator';
 
 const CreateBasket = () => {
 
+  // modal variables
   const [openModal, setOpenModal] = useState(false);
   const props = { openModal, setOpenModal };
 
+  // local state variables
   const [records, setRecords] = useState([]);
   const [handleFetch, setHandleFetch] = useState(false);
 
   const dispatch = useDispatch();
+
+  // redux state variables
   const adminId = useSelector((state) => state.user.username);
   const basketName = useSelector((state) => state.basket.basketName);
   const basketAmount = useSelector((state) => state.basket.basketAmount);
@@ -30,14 +35,18 @@ const CreateBasket = () => {
     props.setOpenModal("form-elements");
   }, [])
 
-    useEffect(() => {
-    const fetchData = async () => {
-      const response = await getRecords(adminId, basketName);
-      console.log(response);
-      setRecords(response);
-    }
-    fetchData();
+  useEffect(() => {
+  const fetchData = async () => {
+    const response = await getRecords(adminId, basketName);
+    console.log(response);
+    setRecords(response || []);
+  }
+  fetchData();
   }, [handleFetch]);
+
+  const formattedValue = segregate(basketAmount);   // formatting input amount
+  const isTableEmpty = !records || records.length === 0; // checking if table is empty
+
 
   return (
     <div className='container mx-auto my-8'>
@@ -51,7 +60,9 @@ const CreateBasket = () => {
         </div>
         <div className="flex items-center">
           <p className="text-black dark:text-white mr-2">Investment</p>
-          <input disabled type="number" value={basketAmount} className="border border-gray-200 rounded-lg w-44" />
+          <span className="border border-gray-200 rounded-lg px-2 py-1 h-10 w-44">
+            {formattedValue}
+          </span>
         </div>
         <div className="flex items-center">
           <p className="text-black dark:text-white mr-2">Basket Value</p>
@@ -60,15 +71,15 @@ const CreateBasket = () => {
       </div>
 
       {/* Table showing Create Basket Records */}
-      <div className='flex shadow border-b' style={{ height: '300px' }}>
-        <div className='overflow-y-auto'>
-          <table className="w-full text-sm text-left text-gray-900 dark:text-gray-400">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
+      <div className='flex'>
+        <div className={isTableEmpty ? '' : 'overflow-y-scroll'}  style={{ maxHeight: '300px' }}>
+          <table className="overflow-y-scroll w-full shadow-md sm:rounded-lg text-sm text-left text-gray-900 dark:text-gray-400">
+            <thead className="sticky top-0 text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th  scope="col" className="px-6 py-3">S.No</th>
                 <th  scope="col" className="px-6 py-3">Stock</th>
                 <th  scope="col" className="px-6 py-3">Exchange</th>
-                <th  scope="col" className="px-6 py-3">Order Type</th>
+                <th  scope="col" className="px-6 py-3">Transaction</th>
                 <th  scope="col" className="px-6 py-3">Weights %</th>
                 <th  scope="col" className="px-6 py-3">Price &#8377;</th>
                 <th  scope="col" className="px-6 py-3">Quantity</th>
@@ -76,17 +87,16 @@ const CreateBasket = () => {
               </tr>
             </thead>
             { 
-              <tbody className='bg-white'>
+              <tbody className='bg-white overflow-y-scroll'>
 
                 {/* Component for showing table records */}
                 {records && records.length > 0 ? (records.map((record, index) => (
-                  <BasketRecords 
+                  <BasketRecords
+                    key={record.recId} 
                     record={record} 
                     index={index} 
                     handleFetch={handleFetch} 
                     setHandleFetch={setHandleFetch}
-                    // deleteRecord={deleteRecordHandler} 
-                    // updateRecord={updateRecordHandler} 
                   />
                   ))) : <p>No table data</p>}
                   

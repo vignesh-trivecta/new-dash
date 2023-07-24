@@ -1,4 +1,4 @@
-// API call to fetch the table records
+// API call to fetch all records of a basket
 export const getRecords = async(adminId, basketName) => {
     try{
         const requestOptions = {
@@ -14,7 +14,7 @@ export const getRecords = async(adminId, basketName) => {
             )
         };
         let data;
-        const response = await fetch("https://19bc-49-204-114-120.ngrok.io/basket/temp/list", requestOptions);
+        const response = await fetch("http://localhost:8083/basket/temp/list", requestOptions);
 
         if (response.ok) {
             const responseText = await response.text();
@@ -34,7 +34,7 @@ export const getRecords = async(adminId, basketName) => {
 
 
 // API call to add a new record
-export const addRecord = async(adminId, basketName,selectedStock, exchange, orderType, quantity, weightage, price, basketAmount ) => {
+export const addRecord = async(adminId, basketName,selectedStock, exchange, transType, quantity, weightage, price, basketAmount ) => {
     try{
         const requestOptions = {
             method: 'POST',
@@ -42,21 +42,21 @@ export const addRecord = async(adminId, basketName,selectedStock, exchange, orde
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                "adminId": adminId,
+                "adminId": 'admin12',
                 "basketName": String(basketName),
                 "instrumentName": selectedStock,
                 "exchangeUsed": exchange,
                 "orderType": "Limit",
-                "transType": orderType,
+                "transType": transType,
                 "quantity": quantity,
                 "weightage": Number(weightage),
-                "price": price,
+                "price": price, 
                 "basketInvAmount": Number(basketAmount)           
             })
         };
 
         let data;
-        const response = await fetch("https://19bc-49-204-114-120.ngrok.io/basket/temp", requestOptions);
+        const response = await fetch("http://localhost:8083/basket/temp", requestOptions);
 
         if (response.ok) {
             const responseText = await response.text();
@@ -98,7 +98,7 @@ export const updateRecordAPI = async(recId, basketName, adminId, selectedStock, 
         };
 
         let data;
-        const response = await fetch("https://19bc-49-204-114-120.ngrok.io/basket/temp/up", requestOptions);
+        const response = await fetch("http://localhost:8083/basket/temp/up", requestOptions);
 
         if (response.ok) {
             const responseText = await response.text();
@@ -124,11 +124,11 @@ export const deleteRecord = async(recId, basketName, adminName) => {
             },
             body: JSON.stringify({
                   "recId": recId,
-                  "basketName": basketName,
-                  "adminName": adminName
-                  })
+                  "basketName": basketName,
+                  "adminName": adminName
+                })
         }
-        const response = await fetch("https://19bc-49-204-114-120.ngrok.io/basket/temp/del", requestOptions);
+        const response = await fetch("http://localhost:8083/basket/temp/del", requestOptions);
 
         if (response.ok) {
             return true;
@@ -161,7 +161,7 @@ export const getEquityPrice = async (instrumentName, exchange) => {
         };
 
         let data;
-        const response = await fetch("https://19bc-49-204-114-120.ngrok.io/equity-price", requestOptions);
+        const response = await fetch("http://localhost:8083/equity-price", requestOptions);
         
         if (response.ok) {
             const responseText = await response.text();
@@ -182,7 +182,7 @@ export const getEquityPrice = async (instrumentName, exchange) => {
 // API call to get the stocks details
 export const getInstrumentDetails = async () => {
     try{
-        const response = await fetch("https://19bc-49-204-114-120.ngrok.io/instruments")
+        const response = await fetch("http://localhost:8083/instruments")
         
         if(response.ok){
             const jsonData = await response.json();
@@ -215,7 +215,7 @@ export const sendWeightage = async(weightage, totalAmount, priceofAsset) => {
         }
 
         let data;
-        const response = await fetch("https://19bc-49-204-114-120.ngrok.io/quantity-calc", requestOptions);
+        const response = await fetch("http://localhost:8083/quantity-calc", requestOptions);
 
         if(response.ok) {
             const responseText = await response.text();

@@ -26,7 +26,7 @@ export default function ValiditySelector({ text }) {
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <ChevronUpDownIcon
                 className="h-5 w-5 text-gray-400"
-                aria-hidden="true"
+                ariaHidden="true"
               />
             </span>
           </Listbox.Button>
@@ -60,7 +60,7 @@ export default function ValiditySelector({ text }) {
                       </span>
                       {selected ? (
                         <span className="absolute inset-y-0 left-0 flex items-center pl-2 text-amber-600">
-                          <CheckIcon className="h-3 w-3" aria-hidden="true" />
+                          <CheckIcon className="h-3 w-3" ariaHidden="true" />
                         </span>
                       ) : null}
                     </>

@@ -31,7 +31,7 @@ const Customers = () => {
 
           <BasketDetails />
           {/* <Tabs.Group
-        aria-label="Default tabs"
+        ariaLabel="Default tabs"
         style="underline"
         ref={props.tabsRef}
         onActiveTabChange={(tab) => properties.setActiveTab(tab)}

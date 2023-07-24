@@ -6,10 +6,10 @@ import SearchDropdown from '@/utils/searchDropdown';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import Weightage from '@/utils/weightage';
-import Table from './Table';
 import { addRecord, getEquityPrice } from '@/app/api/basket/route';
 import { setExchange, setTransType, setOrderType, setPrice, setQuantity, setSelectedStock, setWeightage } from '@/store/addRecordSlice';
 import StockValidity from '@/utils/stockValidity';
+import { segregate } from '@/utils/priceSegregator';
 
 const AddRecord = ({ instrumentName, handleFetch, setHandleFetch }) => {
 
@@ -24,7 +24,7 @@ const AddRecord = ({ instrumentName, handleFetch, setHandleFetch }) => {
     const basketAmount = useSelector((state) => state.basket.basketAmount);
     const price = useSelector((state) => state.add.price);
     const exchange = useSelector((state) => state.add.exchange);
-    const transType = useSelector((state) => state.add.transType);
+    // const transType = useSelector((state) => state.add.transType);
     const orderType = useSelector((state) => state.add.orderType);
     const quantity = useSelector((state) => state.add.quantity);
     const adminId = useSelector((state) => state.user.user);
@@ -68,6 +68,7 @@ const AddRecord = ({ instrumentName, handleFetch, setHandleFetch }) => {
         // by removing setRecord or can use directly
         // the response received needs to be mapped to Table
         const postData = async() => {
+            const transType = toggle ? "SELL" : "BUY";
             const data = await addRecord(adminId, basketName,selectedStock, exchange, transType, quantity, weightage, price, basketAmount);
             if(data.status == 200){
                 setHandleFetch(!handleFetch);
@@ -100,23 +101,23 @@ const AddRecord = ({ instrumentName, handleFetch, setHandleFetch }) => {
                     <Modal.Header className={toggle ? "bg-orange-500" : "bg-cyan-800"}>
                     
                     <label className="relative inline-flex items-center mb-4 cursor-pointer">
-                        <input type="checkbox" value={toggle} onChange={() => {setToggle(!toggle); console.log(toggle)}} class="sr-only peer" />
-                        <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-orange-300"></div>
-                        <span class="ml-3 text-sm font-medium text-white dark:text-gray-300">{toggle ? "SELL" : "BUY"}</span>
+                        <input type="checkbox" value={toggle} onChange={() => {setToggle(!toggle); console.log(toggle)}} className="sr-only peer" />
+                        <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-orange-300"></div>
+                        <span className="ml-3 text-sm font-medium text-white dark:text-gray-300">{toggle ? "SELL" : "BUY"}</span>
                     </label>
 
                     </Modal.Header>
                     <Modal.Body>
                         {/* <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-10">Add new record</h3> */}
-                        <div className='grid grid-rows-6 grid-cols-3 gap-x- gap-y-2 mt-4'>
+                        <div className='grid grid-rows-4 grid-cols-3 gap-x- gap-y-2 mt-4'>
                                 <Label htmlFor="stock" value="Stock" className='text-sm' />
                                 <div className=''>
-                                    {/* <SearchDropdown id="stock" /> */}
+                                    <SearchDropdown id="stock" />
                                 </div>
 
                                 <div className='relative col-start-3 row-start-1 flex flex-col ml-8'>
                                     <Label htmlFor="price" value="Price" className='absolute left-2 bg-white px-1 -top-2 text-sm z-10' />
-                                    <input disabled id='price' name="price" value={price} type="number" className='absolute pl-8 w-full bg-gray-200 rounded-md border border-gray-200' />
+                                    <input disabled id='price' name="price" value={price} type="number" className='absolute pl-8 w-full bg-gray-50 rounded-md border border-gray-200' />
                                 </div>
 
 
@@ -147,14 +148,14 @@ const AddRecord = ({ instrumentName, handleFetch, setHandleFetch }) => {
                                     <Weightage />
                                 </div>
 
-                                <Label value="Transaction Type" className='col-start-1 row-start-4 text-sm'/>
-                                <div className='col-start-2'>
+                                {/* <Label value="Transaction Type" className='col-start-1 row-start-4 text-sm'/> */}
+                                {/* <div className='col-start-2'>
                                     <input id="buy" name="transType" type='radio' value="BUY" checked={transType === "BUY"} onClick={() => dispatch(setTransType("BUY"))} />
                                     <label htmlFor='buy' className='ml-1 text-sm'>BUY</label>
                                     <input id="sell" name="transType" type='radio' value="SELL" className='ml-1' checked={transType === "SELL"} onClick={() => dispatch(setTransType("SELL"))} />
                                     <label htmlFor='sell' className='ml-1 text-sm'>SELL</label>
-                                </div>
-                                <Label value="Order Type" className='col-start-1 row-start-5 text-sm'/>
+                                </div> */}
+                                <Label value="Order Type" className='col-start-1 row-start-4 text-sm'/>
                                 <div className='col-start-2'>
                                     <input id="market" name="orderType" type='radio' value="MARKET" checked={orderType === "MARKET"} onClick={() => dispatch(setOrderType("MARKET"))} />
                                     <label htmlFor='market' className='ml-1 text-sm'>MARKET</label>
@@ -162,20 +163,20 @@ const AddRecord = ({ instrumentName, handleFetch, setHandleFetch }) => {
                                     <label htmlFor='limit' className='ml-1 text-sm'>LIMIT</label>
                                 </div>
                                     
-                                {orderType === "LIMIT" && (
+                                {/* {orderType === "LIMIT" && (
                                     <>
-                                        <Label className='text-sm row-start-6 col-start-1'>Validity</Label>
-                                        <div className='row-start-6 col-start-2'>
+                                        <Label className='text-sm row-start-5 col-start-1'>Validity</Label>
+                                        <div className='row-start-5 col-start-2'>
                                         <StockValidity />
                                         </div>
                                     </>
-                                )}
+                                )} */}
 
                                     
 
                                 <div className='relative col-start-3 row-start-3 flex flex-col ml-8'>
                                     <Label htmlFor='quantity' value="Quantity" className='absolute left-2 -top-2 bg-white px-1 text-sm z-10' />
-                                    <input disabled id='quantity' name='quantity' value={quantity} type="number" className='absolute pl-8 w-full bg-gray-200 border border-gray-200 rounded-md' />
+                                    <input disabled id='quantity' name='quantity' value={segregate(quantity)} type="string" className='absolute pl-8 p-2 w-full bg-gray-50 border border-gray-200 rounded-md' />
                                 </div>
 
 
