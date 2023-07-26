@@ -7,9 +7,9 @@ const initialState = {
     exchange: "",
     transType: "",
     orderType: "",
-    weightage: "",
-    quantity: "",
-    price: "",
+    weightage: null,
+    quantity: null,
+    price: null,
 };
 
 // creating a new slice
