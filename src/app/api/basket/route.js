@@ -13,13 +13,11 @@ export const getRecords = async(adminId, basketName) => {
                 }
             )
         };
-        let data;
         const response = await fetch("http://localhost:8083/basket/temp/list", requestOptions);
 
         if (response.ok) {
             const responseText = await response.text();
-            data = JSON.parse(responseText);
-            console.log(data)
+            let data = JSON.parse(responseText);
             return data;
         } else {
             const errorText = await response.text();
@@ -55,12 +53,11 @@ export const addRecord = async(adminId, basketName,selectedStock, exchange, tran
             })
         };
 
-        let data;
         const response = await fetch("http://localhost:8083/basket/temp", requestOptions);
 
         if (response.ok) {
             const responseText = await response.text();
-            data = JSON.parse(responseText);
+            let data = JSON.parse(responseText);
             console.log(data)
             return data;
         } else {
@@ -97,7 +94,6 @@ export const updateRecordAPI = async(recId, basketName, adminId, selectedStock, 
             })
         };
 
-        let data;
         const response = await fetch("http://localhost:8083/basket/temp/up", requestOptions);
 
         if (response.ok) {
@@ -143,6 +139,33 @@ export const deleteRecord = async(recId, basketName, adminName) => {
 }
 
 
+// API call to check whether the basket name already exists or not
+export const basketNameCheck = async (basketName) => {
+    console.log(basketName)
+
+    try {
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "basketName": basketName
+            })
+        }
+        const response = await fetch("http://localhost:8083/basket/namecheck", requestOptions);
+        console.log(response)
+        if(response.ok){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    catch(error) {
+        console.log(error);
+    }
+}
 
 
 
@@ -160,12 +183,11 @@ export const getEquityPrice = async (instrumentName, exchange) => {
             })
         };
 
-        let data;
         const response = await fetch("http://localhost:8083/equity-price", requestOptions);
         
         if (response.ok) {
             const responseText = await response.text();
-            data = JSON.parse(responseText);
+            let data = JSON.parse(responseText);
             console.log("Response ok", data);
             return data.price;
         } else {
@@ -214,12 +236,11 @@ export const sendWeightage = async(weightage, totalAmount, priceofAsset) => {
             })
         }
 
-        let data;
         const response = await fetch("http://localhost:8083/quantity-calc", requestOptions);
 
         if(response.ok) {
             const responseText = await response.text();
-            data = JSON.parse(responseText);
+            let data = JSON.parse(responseText);
             console.log(data.quantity)
             return data.quantity;
         } else {

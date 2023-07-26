@@ -1,3 +1,4 @@
+import { basketNameCheck } from '@/app/api/basket/route';
 import { setBasketName } from '@/store/basketSlice';
 import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,6 +8,7 @@ const BasketName = ({autoFocus}) => {
   const basketName = useSelector((state) => state.basket.basketName);
 
   const [inputValue, setInputValue] = useState("");
+  const [status, setStatus] = useState(false);
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -14,14 +16,21 @@ const BasketName = ({autoFocus}) => {
     inputRef.current.focus();
   }, [basketName]);
 
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     const inputValue = e.target.value;
-    setInputValue(inputValue);
-    dispatch(setBasketName(inputValue));
+    let response = await basketNameCheck(e.target.value);
+    if(!response){
+      setInputValue(inputValue);
+      dispatch(setBasketName(inputValue));
+      setStatus(true);
+    }
+    else{
+      setStatus(false);
+    }
   };
 
   return (
-    <div>
+    <div className=''>
       <input
         type='text'
         className='w-32 rounded-md border-gray-300'
@@ -29,6 +38,7 @@ const BasketName = ({autoFocus}) => {
         autoFocus={true}
         ref={inputRef}
       />
+      {status && <p className='text-xs text-red-700 mt-2'>Basket name already exists!</p>}
     </div>
   );
 };
